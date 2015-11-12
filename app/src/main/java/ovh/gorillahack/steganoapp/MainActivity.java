@@ -18,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         encode = (Button) findViewById(R.id.encodeBT);
         decode = (Button) findViewById(R.id.decodeBT);
         info = (Button) findViewById(R.id.infoBT);

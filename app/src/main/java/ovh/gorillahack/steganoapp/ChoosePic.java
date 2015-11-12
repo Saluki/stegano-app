@@ -20,7 +20,6 @@ public class ChoosePic extends AppCompatActivity {
     private int TAKE_PICTURE = 2;
     String photoPath;
 
-
     Button takePic;
     Button choosePic;
 
