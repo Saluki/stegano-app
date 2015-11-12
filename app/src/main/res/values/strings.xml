@@ -3,4 +3,11 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="encode">encode</string>
+    <string name="decode">decode</string>
+    <string name="info">info</string>
+    <string name="title_activity_choose_pic">choosePic</string>
+    <string name="title_activity_show_gallery">ShowGallery</string>
+    <string name="fromGallery">Choose From Gallery</string>
+    <string name="lauchCamera">Take Picture</string>
 </resources>
