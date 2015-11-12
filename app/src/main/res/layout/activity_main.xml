@@ -5,7 +5,34 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity">
 
-    <TextView android:text="@string/hello_world" android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/encode"
+        android:id="@+id/encodeBT"
+        android:layout_marginBottom="78dp"
+        android:layout_above="@+id/decodeBT"
+        android:layout_alignLeft="@+id/decodeBT"
+        android:layout_alignStart="@+id/decodeBT"
+        android:onClick="lauchEncodeActivity" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/decode"
+        android:id="@+id/decodeBT"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:onClick="lauchDecodeActivity" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/info"
+        android:id="@+id/infoBT"
+        android:layout_below="@+id/decodeBT"
+        android:layout_alignLeft="@+id/decodeBT"
+        android:layout_alignStart="@+id/decodeBT"
+        android:layout_marginTop="61dp"
+        android:onClick="showInfo" />
 </RelativeLayout>
