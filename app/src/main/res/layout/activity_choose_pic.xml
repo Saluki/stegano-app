@@ -15,7 +15,8 @@
         android:id="@+id/takePicBT"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="113dp" />
+        android:layout_marginTop="113dp"
+        android:onClick="launchCamera" />
 
     <Button
         android:layout_width="wrap_content"
@@ -24,5 +25,6 @@
         android:id="@+id/choosePicBT"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="133dp" />
+        android:layout_marginBottom="133dp"
+        android:onClick="showGallery" />
 </RelativeLayout>
