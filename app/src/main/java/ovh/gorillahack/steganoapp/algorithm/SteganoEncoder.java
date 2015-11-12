@@ -2,6 +2,7 @@ package ovh.gorillahack.steganoapp.algorithm;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 
 import ovh.gorillahack.steganoapp.exceptions.BitmapTransformException;
 import ovh.gorillahack.steganoapp.exceptions.SteganoEncodeException;
@@ -29,9 +30,37 @@ public class SteganoEncoder {
         this.pictureBitmap = pictureBitmap;
     }
 
-    public void encode(String text) throws SteganoEncodeException {
+    public Bitmap encode(String text) throws SteganoEncodeException {
+
+        if( text==null ) {
+            throw new NullPointerException("Text to encode cannot be null");
+        }
+
+        this.getBinarySequence(text);
+
+        for(int y=0; y<this.pictureBitmap.getHeight(); y++) {
+            for(int x=0; x<this.pictureBitmap.getWidth(); x++) {
+
+                int argbColor = this.pictureBitmap.getPixel(x, y);
+                int lsb = this.getLastSignificantBit(argbColor);
 
 
+            }
+        }
+
+        return this.pictureBitmap;
+    }
+
+    protected int[] getBinarySequence(String text) {
+        return null; // TODO
+    }
+
+    protected int getLastSignificantBit(int standardColor) {
+
+        int blueColor = Color.blue(standardColor);
+        int bitMask = 1;
+
+        return blueColor&bitMask;
     }
 
     protected Bitmap transformFromByteArray(final byte[] pictureData) throws BitmapTransformException{
