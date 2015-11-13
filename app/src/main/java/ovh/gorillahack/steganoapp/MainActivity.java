@@ -1,5 +1,6 @@
 package ovh.gorillahack.steganoapp;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
+
     Button encode;
     Button decode;
     Button info;
@@ -18,14 +20,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         encode = (Button) findViewById(R.id.encodeBT);
         decode = (Button) findViewById(R.id.decodeBT);
         info = (Button) findViewById(R.id.infoBT);
 
     }
 
-    public void lauchEncodeActivity(View v) {
+    public void launchEncodeActivity(View v) {
         Intent intent = new Intent(this, ChoosePic.class);
         startActivity(intent);
     }
@@ -36,7 +37,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void showInfo(View v) {
-        //TODO: show pop up dialog with info on app
+        Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.dialog);
+        dialog.setTitle(R.string.info);
+        dialog.show();
     }
 
     @Override

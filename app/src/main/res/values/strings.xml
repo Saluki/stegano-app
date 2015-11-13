@@ -10,4 +10,5 @@
     <string name="title_activity_show_gallery">ShowGallery</string>
     <string name="fromGallery">Choose From Gallery</string>
     <string name="lauchCamera">Take Picture</string>
+    <string name="informations">This app allows you to hide a message in a picture using watermarking (more precisely: LRB)</string>
 </resources>

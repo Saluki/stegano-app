@@ -14,7 +14,7 @@
         android:layout_above="@+id/decodeBT"
         android:layout_alignLeft="@+id/decodeBT"
         android:layout_alignStart="@+id/decodeBT"
-        android:onClick="lauchEncodeActivity" />
+        android:onClick="launchEncodeActivity" />
 
     <Button
         android:layout_width="wrap_content"
