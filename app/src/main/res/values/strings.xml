@@ -13,7 +13,9 @@
     <string name="informations">This app allows you to hide a message in a picture using watermarking (more precisely: LRB)</string>
     <string name="messageToEnc">Message to encode:</string>
     <string name="cancel">cancel</string>
-    <string name="image_encrypt_succ">Image encoded successfully</string>
+    <string name="image_encrypt_succ">Image encoded successfully \n It is now in you gallery</string>
     <string name="error">The application has encountered an error</string>
     <string name="ok">OK</string>
+    <string name="choose_image_to_decode">Choose image to decode</string>
+    <string name="this_is_the_mess">This is the message: \n</string>
 </resources>

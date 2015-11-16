@@ -138,7 +138,6 @@ public class ChoosePic extends AppCompatActivity {
                 dialog.cancel();
             }
         });
-
         builder.show();
     }
 

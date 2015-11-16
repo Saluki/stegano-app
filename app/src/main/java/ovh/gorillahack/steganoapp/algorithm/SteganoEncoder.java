@@ -51,6 +51,11 @@ public class SteganoEncoder {
         return this.pictureBitmap;
     }
 
+    //todo: sache que cette methode est vide, mais elle existe
+    public String decode() {
+        return null;
+    }
+
     protected int[] getBinarySequence(String text) {
         return null; // TODO
     }
