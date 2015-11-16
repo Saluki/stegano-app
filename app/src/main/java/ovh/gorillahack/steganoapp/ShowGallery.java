@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import java.io.IOException;
 
 import ovh.gorillahack.steganoapp.algorithm.SteganoEncoder;
+import ovh.gorillahack.steganoapp.utils.Utils;
 
 public class ShowGallery extends AppCompatActivity {
     Bitmap picChosen;
@@ -33,15 +34,12 @@ public class ShowGallery extends AppCompatActivity {
             }
 
         } else {
-            //TODO: mettre le methode de la ligne suivante de utils (elle est impl dans ChoosePic)
-            // buildTextViewPopUp(getString(R.string.error));
+            Utils.buildTextViewPopUp(this, getString(R.string.error));
         }
         SteganoEncoder encoder = new SteganoEncoder(picChosen);
         String message = encoder.decode();
-        //TODO: mettre le methode de la ligne suivante de utils (elle est impl dans ChoosePic
         String text = getString(R.string.this_is_the_mess) + message;
-        // buildTextViewPopUp(getString(text));
+        Utils.buildTextViewPopUp(this, text);
     }
-
 }
 

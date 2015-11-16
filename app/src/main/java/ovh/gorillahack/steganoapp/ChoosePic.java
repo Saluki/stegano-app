@@ -12,7 +12,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,6 +19,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import ovh.gorillahack.steganoapp.algorithm.SteganoEncoder;
+import ovh.gorillahack.steganoapp.utils.Utils;
 
 public class ChoosePic extends AppCompatActivity {
     private int PICK_IMAGE = 1;
@@ -90,7 +90,7 @@ public class ChoosePic extends AppCompatActivity {
             //do when want the gallery to know the picture is there? then we need to add code https://developer.android.com/training/camera/photobasics.html
             //TODO: come back from camera and put picture in picChosen
         } else {
-            buildTextViewPopUp(getString(R.string.error));
+            Utils.buildTextViewPopUp(this, getString(R.string.error));
         }
         buildEditTextPopUp();
 
@@ -109,7 +109,7 @@ public class ChoosePic extends AppCompatActivity {
 
     //https://stackoverflow.com/questions/10903754/input-text-dialog-android
     public void buildEditTextPopUp() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.messageToEnc);
 
         // Set up the input
@@ -124,11 +124,11 @@ public class ChoosePic extends AppCompatActivity {
                 SteganoEncoder encoder = new SteganoEncoder(picChosen);
                 String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
                 MediaStore.Images.Media.insertImage(getContentResolver(), picChosen, timeStamp + ".jpg", null);
-                buildTextViewPopUp(getString(R.string.image_encrypt_succ));
+                Utils.buildTextViewPopUp(builder.getContext(), getString(R.string.image_encrypt_succ));
                 try {
                     encoder.encode(messsageToEncode);
                 } catch (Exception e) {
-                    buildTextViewPopUp(getString(R.string.error) + e.getMessage());
+                    Utils.buildTextViewPopUp(builder.getContext(), getString(R.string.error) + e.getMessage());
                 }
             }
         });
@@ -142,21 +142,5 @@ public class ChoosePic extends AppCompatActivity {
     }
 
 
-    public void buildTextViewPopUp(String text) {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.info);
 
-        // Set up the input
-        final TextView toShow = new TextView(this);
-        toShow.setText(text);
-        builder.setView(toShow);
-
-        // Set up the buttons
-        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-            }
-        });
-        builder.show();
-    }
 }
