@@ -11,6 +11,7 @@ import ovh.gorillahack.steganoapp.R;
  * Created by javi on 16.11.15.
  */
 public class Utils {
+
     public static void buildTextViewPopUp(Context c, String text) {//TODO: add title in parameters
         final AlertDialog.Builder builder = new AlertDialog.Builder(c);
         builder.setTitle(R.string.info);

@@ -9,9 +9,11 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,6 +24,7 @@ import ovh.gorillahack.steganoapp.algorithm.SteganoEncoder;
 import ovh.gorillahack.steganoapp.utils.Utils;
 
 public class ChoosePic extends AppCompatActivity {
+
     private int PICK_IMAGE = 1;
     private int TAKE_PICTURE = 2;
     String photoPath;
@@ -42,29 +45,35 @@ public class ChoosePic extends AppCompatActivity {
     }
 
     public void launchCamera(View view) {
+
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
         // Ensure that there's a camera activity to handle the intent
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            // Create the File where the photo should go
-            File photoFile = null;
-            try {
-                photoFile = createImageFile();
-            } catch (IOException ex) {
-                // Error occurred while creating the File
-                //TODO: gerer exception
-            }
-            if (photoFile != null) {
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
-                startActivityForResult(takePictureIntent, TAKE_PICTURE);
-            }
+        if (takePictureIntent.resolveActivity(getPackageManager()) == null) {
+            Toast.makeText(view.getContext(), R.string.choosepic_camera_not_found, Toast.LENGTH_SHORT).show();
+            return;
         }
+
+        // Create the file where the photo should go
+        File photoFile = null;
+        try {
+            photoFile = createImageFile();
+        } catch (IOException e) {
+            Toast.makeText(getApplicationContext(), R.string.choosepic_picture_not_created, Toast.LENGTH_SHORT).show();
+            Log.e("ChoosePicActivity", "Error occurred while creating file: "+e.getMessage());
+            return;
+        }
+
+        // Prepare and start camera intent
+        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
+        startActivityForResult(takePictureIntent, TAKE_PICTURE);
     }
 
     public void showGallery(View view) {
+
         //launch gallery
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("image/*");//only images, no videos
-
 
         Intent pickIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         pickIntent.setType("image/*");
@@ -79,24 +88,41 @@ public class ChoosePic extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == PICK_IMAGE && resultCode == RESULT_OK && data != null && data.getData() != null) {
+        if( resultCode!=RESULT_OK ) {
+            Toast.makeText(getApplicationContext(), R.string.choosepic_result_failed, Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        if( data==null || data.getData()==null ) {
+            Utils.buildTextViewPopUp(this, getString(R.string.error));
+            return;
+        }
+
+        if (requestCode == PICK_IMAGE) {
+
             Uri uri = data.getData();
             try {
-                picChosen = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                this.picChosen = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
             } catch (IOException e) {
-                e.printStackTrace();
+                Toast.makeText(getApplicationContext(), R.string.error, Toast.LENGTH_LONG).show();
+                Log.e("ChoosePicActivity", "Could not retrieve media: "+e.getMessage());
+                return;
             }
-        } else if (requestCode == TAKE_PICTURE && resultCode == RESULT_OK && data != null && data.getData() != null) {
+
+        } else if (requestCode == TAKE_PICTURE) {
+
             //do when want the gallery to know the picture is there? then we need to add code https://developer.android.com/training/camera/photobasics.html
             //TODO: come back from camera and put picture in picChosen
+
         } else {
             Utils.buildTextViewPopUp(this, getString(R.string.error));
+            return;
         }
-        buildEditTextPopUp();
 
+        buildEditTextPopUp();
     }
 
-    public File createImageFile() throws IOException {
+    protected File createImageFile() throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
@@ -138,9 +164,9 @@ public class ChoosePic extends AppCompatActivity {
                 dialog.cancel();
             }
         });
+
         builder.show();
     }
-
 
 
 }
