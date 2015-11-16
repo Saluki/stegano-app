@@ -122,6 +122,8 @@ public class ChoosePic extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 messsageToEncode = input.getText().toString();
                 SteganoEncoder encoder = new SteganoEncoder(picChosen);
+                String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+                MediaStore.Images.Media.insertImage(getContentResolver(), picChosen, timeStamp + ".jpg", null);
                 buildTextViewPopUp(getString(R.string.image_encrypt_succ));
                 try {
                     encoder.encode(messsageToEncode);
@@ -140,15 +142,22 @@ public class ChoosePic extends AppCompatActivity {
         builder.show();
     }
 
+
     public void buildTextViewPopUp(String text) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.informations);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.info);
 
         // Set up the input
-        TextView toShow = new TextView(this);
+        final TextView toShow = new TextView(this);
         toShow.setText(text);
         builder.setView(toShow);
 
+        // Set up the buttons
+        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
         builder.show();
     }
 }

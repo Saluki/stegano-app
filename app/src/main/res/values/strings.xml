@@ -15,4 +15,5 @@
     <string name="cancel">cancel</string>
     <string name="image_encrypt_succ">Image encoded successfully</string>
     <string name="error">The application has encountered an error</string>
+    <string name="ok">OK</string>
 </resources>
