@@ -11,4 +11,8 @@
     <string name="fromGallery">Choose From Gallery</string>
     <string name="lauchCamera">Take Picture</string>
     <string name="informations">This app allows you to hide a message in a picture using watermarking (more precisely: LRB)</string>
+    <string name="messageToEnc">Message to encode:</string>
+    <string name="cancel">cancel</string>
+    <string name="image_encrypt_succ">Image encoded successfully</string>
+    <string name="error">The application has encountered an error</string>
 </resources>
