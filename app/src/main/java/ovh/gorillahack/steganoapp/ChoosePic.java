@@ -123,6 +123,7 @@ public class ChoosePic extends AppCompatActivity {
     }
 
     protected File createImageFile() throws IOException {
+
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);

@@ -9,16 +9,17 @@ import android.support.v7.app.AppCompatActivity;
 
 import java.io.IOException;
 
-import ovh.gorillahack.steganoapp.algorithm.SteganoEncoder;
+import ovh.gorillahack.steganoapp.algorithm.SteganoDecoder;
 import ovh.gorillahack.steganoapp.utils.Utils;
 
 public class ShowGallery extends AppCompatActivity {
+
     Bitmap picChosen;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_gallery);
-
     }
 
     @Override
@@ -35,10 +36,12 @@ public class ShowGallery extends AppCompatActivity {
 
         } else {
             Utils.buildTextViewPopUp(this, getString(R.string.error));
+            return;
         }
-        SteganoEncoder encoder = new SteganoEncoder(picChosen);
-        String message = encoder.decode();
+
+        String message = (new SteganoDecoder(this.picChosen)).decode();
         String text = getString(R.string.this_is_the_mess) + message;
+
         Utils.buildTextViewPopUp(this, text);
     }
 }
