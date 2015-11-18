@@ -1,6 +1,10 @@
 package ovh.gorillahack.steganoapp.utils;
 
+import android.graphics.Bitmap;
 import android.graphics.Color;
+
+import java.security.InvalidParameterException;
+import java.util.ArrayList;
 
 public class SteganoUtils {
 
@@ -23,5 +27,23 @@ public class SteganoUtils {
         }
 
         return bitList;
+    }
+
+    static public String getStringBinaryList(ArrayList<Integer> binaryList) {
+
+        return binaryList.toString();   // TODO
+    }
+
+    static public void checkBitmap(Bitmap pictureBitmap) {
+
+        if (pictureBitmap == null) {
+            throw new NullPointerException("Picture bitmap cannot be null");
+        }
+
+        if (pictureBitmap.getWidth() == 0 || pictureBitmap.getHeight() == 0) {
+            throw new InvalidParameterException("Picture must have a valid size");
+        }
+
+        // Everything OK
     }
 }

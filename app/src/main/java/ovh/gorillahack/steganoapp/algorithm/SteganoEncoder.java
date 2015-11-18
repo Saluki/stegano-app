@@ -16,18 +16,11 @@ public class SteganoEncoder {
 
     public SteganoEncoder(Bitmap pictureBitmap) {
 
-        if (pictureBitmap == null) {
-            throw new NullPointerException("Picture bitmap cannot be null");
-        }
-
-        if (pictureBitmap.getWidth() == 0 || pictureBitmap.getHeight() == 0) {
-            throw new InvalidParameterException("Picture must have a valid size");
-        }
-
+        SteganoUtils.checkBitmap(pictureBitmap);
         this.pictureBitmap = pictureBitmap;
     }
 
-    public Bitmap encode(String text) throws SteganoEncodeException {
+    public Bitmap encode(String text) {
 
         if (text == null || text.isEmpty()) {
             throw new NullPointerException("Text to encode cannot be null or empty");
