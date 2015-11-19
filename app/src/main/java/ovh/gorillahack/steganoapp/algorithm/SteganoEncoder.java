@@ -1,23 +1,18 @@
 package ovh.gorillahack.steganoapp.algorithm;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 
-import java.security.InvalidParameterException;
-import java.util.ArrayList;
-
-import ovh.gorillahack.steganoapp.exceptions.SteganoEncodeException;
 import ovh.gorillahack.steganoapp.utils.SteganoUtils;
 
 public class SteganoEncoder {
 
     protected Bitmap pictureBitmap;
 
-    public SteganoEncoder(Bitmap pictureBitmap) {
+    public SteganoEncoder(Bitmap immutableBitmap) {
 
-        SteganoUtils.checkBitmap(pictureBitmap);
-        this.pictureBitmap = pictureBitmap;
+        SteganoUtils.checkBitmap(immutableBitmap);
+        this.pictureBitmap = immutableBitmap.copy(immutableBitmap.getConfig(), true);
     }
 
     public Bitmap encode(String text) {
