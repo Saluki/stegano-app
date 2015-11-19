@@ -11,7 +11,6 @@ import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -25,23 +24,20 @@ import ovh.gorillahack.steganoapp.utils.Utils;
 
 public class ChoosePic extends AppCompatActivity {
 
-    private int PICK_IMAGE = 1;
-    private int TAKE_PICTURE = 2;
+    private static final int PICK_IMAGE = 1;
+    private static final int TAKE_PICTURE = 2;
+    private static final String INTENT_IMAGE_TYPE = "image/*";
+
     String photoPath;
     String messsageToEncode = "";
 
-    Button takePic;
-    Button choosePic;
-
-    Bitmap picChosen;
+    Bitmap pictureChoosen;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_pic);
-
-        takePic = (Button) findViewById(R.id.takePicBT);
-        choosePic = (Button) findViewById(R.id.choosePicBT);
     }
 
     public void launchCamera(View view) {
@@ -55,7 +51,7 @@ public class ChoosePic extends AppCompatActivity {
         }
 
         // Create the file where the photo should go
-        File photoFile = null;
+        File photoFile;
         try {
             photoFile = createImageFile();
         } catch (IOException e) {
@@ -71,12 +67,8 @@ public class ChoosePic extends AppCompatActivity {
 
     public void showGallery(View view) {
 
-        //launch gallery
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.setType("image/*");//only images, no videos
-
         Intent pickIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        pickIntent.setType("image/*");
+        pickIntent.setType(INTENT_IMAGE_TYPE);
 
         Intent chooserIntent = Intent.createChooser(getIntent(), "Select Image");
         chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[]{pickIntent});
@@ -103,7 +95,7 @@ public class ChoosePic extends AppCompatActivity {
 
             Uri uri = data.getData();
             try {
-                this.picChosen = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                this.pictureChoosen = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
             } catch (IOException e) {
                 Toast.makeText(getApplicationContext(), R.string.error, Toast.LENGTH_LONG).show();
                 Log.e("ChoosePicActivity", "Could not retrieve media: "+e.getMessage());
@@ -113,7 +105,7 @@ public class ChoosePic extends AppCompatActivity {
         } else if (requestCode == TAKE_PICTURE) {
 
             //do when want the gallery to know the picture is there? then we need to add code https://developer.android.com/training/camera/photobasics.html
-            //TODO: come back from camera and put picture in picChosen
+            //TODO: come back from camera and put picture in pictureChoosen
 
         } else {
             Utils.buildTextViewPopUp(this, getString(R.string.error));
@@ -150,9 +142,9 @@ public class ChoosePic extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 messsageToEncode = input.getText().toString();
-                SteganoEncoder encoder = new SteganoEncoder(picChosen);
+                SteganoEncoder encoder = new SteganoEncoder(pictureChoosen);
                 String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-                MediaStore.Images.Media.insertImage(getContentResolver(), picChosen, timeStamp + ".jpg", null);
+                MediaStore.Images.Media.insertImage(getContentResolver(), pictureChoosen, timeStamp + ".jpg", null);
                 Utils.buildTextViewPopUp(builder.getContext(), getString(R.string.image_encrypt_succ));
                 try {
                     encoder.encode(messsageToEncode);
