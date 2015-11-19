@@ -1,11 +1,9 @@
 package ovh.gorillahack.steganoapp;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -17,9 +15,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -93,14 +89,13 @@ public class ChoosePic extends AppCompatActivity {
             return;
         }
 
-        if (data == null || data.getData() == null) {
-            Utils.buildTextViewPopUp(this, getString(R.string.error));
-            Log.e("ChoosePicActivity", "Data format was null");
-            return;
-        }
 
         if (requestCode == PICK_IMAGE) {
-
+            if (data == null || data.getData() == null) {
+                Utils.buildTextViewPopUp(this, getString(R.string.error));
+                Log.e("ChoosePicActivity", "Data format was null");
+                return;
+            }
             Uri uri = data.getData();
             try {
                 this.pictureChoosen = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
@@ -111,28 +106,8 @@ public class ChoosePic extends AppCompatActivity {
             }
 
         } else if (requestCode == TAKE_PICTURE) {
-
-            InputStream stream = null;
-            if (requestCode == TAKE_PICTURE && resultCode == Activity.RESULT_OK)
-                try {
-                    // recyle unused bitmaps
-                    if (pictureChoosen != null) {
-                        pictureChoosen.recycle();
-                    }
-                    stream = getContentResolver().openInputStream(data.getData());
-                    pictureChoosen = BitmapFactory.decodeStream(stream);
-
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } finally {
-                    if (stream != null) {
-                        try {
-                            stream.close();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
+            Bundle extras = data.getExtras();
+            pictureChoosen = (Bitmap) extras.get("data");
 
         } else {
             Utils.buildTextViewPopUp(this, getString(R.string.error));
