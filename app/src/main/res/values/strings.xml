@@ -22,5 +22,6 @@
     <string name="choosepic_camera_not_found">Sorry, could not have access to your camera</string>
     <string name="choosepic_picture_not_created">Sorry, could not create picture</string>
     <string name="choosepic_result_failed">Failed to retrieve picture</string>
+    <string name="error_creating_file">error creating file</string>
 
 </resources>

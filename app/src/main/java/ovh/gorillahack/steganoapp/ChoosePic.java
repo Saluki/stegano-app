@@ -1,9 +1,11 @@
 package ovh.gorillahack.steganoapp;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -15,7 +17,9 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -41,28 +45,31 @@ public class ChoosePic extends AppCompatActivity {
     }
 
     public void launchCamera(View view) {
-
+/*
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
         // Ensure that there's a camera activity to handle the intent
-        if (takePictureIntent.resolveActivity(getPackageManager()) == null) {
-            Toast.makeText(view.getContext(), R.string.choosepic_camera_not_found, Toast.LENGTH_SHORT).show();
-            return;
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            // Create the File where the photo should go
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                // Error occurred while creating the File
+                Toast.makeText(getApplicationContext(), R.string.error_creating_file, Toast.LENGTH_LONG).show();
+                Log.e("error",ex.getMessage());
+            }
+            // Continue only if the File was successfully created
+            if (photoFile != null) {
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
+                        Uri.fromFile(photoFile));
+                startActivityForResult(takePictureIntent, TAKE_PICTURE);
+            }
         }
+    */
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, MediaStore.Images.Media.EXTERNAL_CONTENT_URI.getPath());
+        startActivityForResult(intent, TAKE_PICTURE);
 
-        // Create the file where the photo should go
-        File photoFile;
-        try {
-            photoFile = createImageFile();
-        } catch (IOException e) {
-            Toast.makeText(getApplicationContext(), R.string.choosepic_picture_not_created, Toast.LENGTH_SHORT).show();
-            Log.e("ChoosePicActivity", "Error occurred while creating file: "+e.getMessage());
-            return;
-        }
-
-        // Prepare and start camera intent
-        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
-        startActivityForResult(takePictureIntent, TAKE_PICTURE);
     }
 
     public void showGallery(View view) {
@@ -80,12 +87,13 @@ public class ChoosePic extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if( resultCode!=RESULT_OK ) {
+        if (resultCode != RESULT_OK) {
             Toast.makeText(getApplicationContext(), R.string.choosepic_result_failed, Toast.LENGTH_LONG).show();
+            Log.e("activity result error:", "resutl code: " + resultCode + "   request code:" + requestCode);
             return;
         }
 
-        if( data==null || data.getData()==null ) {
+        if (data == null || data.getData() == null) {
             Utils.buildTextViewPopUp(this, getString(R.string.error));
             Log.e("ChoosePicActivity", "Data format was null");
             return;
@@ -98,18 +106,37 @@ public class ChoosePic extends AppCompatActivity {
                 this.pictureChoosen = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
             } catch (IOException e) {
                 Toast.makeText(getApplicationContext(), R.string.error, Toast.LENGTH_LONG).show();
-                Log.e("ChoosePicActivity", "Could not retrieve media: "+e.getMessage());
+                Log.e("ChoosePicActivity", "Could not retrieve media: " + e.getMessage());
                 return;
             }
 
         } else if (requestCode == TAKE_PICTURE) {
 
-            //do when want the gallery to know the picture is there? then we need to add code https://developer.android.com/training/camera/photobasics.html
-            //TODO: come back from camera and put picture in pictureChoosen
+            InputStream stream = null;
+            if (requestCode == TAKE_PICTURE && resultCode == Activity.RESULT_OK)
+                try {
+                    // recyle unused bitmaps
+                    if (pictureChoosen != null) {
+                        pictureChoosen.recycle();
+                    }
+                    stream = getContentResolver().openInputStream(data.getData());
+                    pictureChoosen = BitmapFactory.decodeStream(stream);
+
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } finally {
+                    if (stream != null) {
+                        try {
+                            stream.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
 
         } else {
             Utils.buildTextViewPopUp(this, getString(R.string.error));
-            Log.e("ChoosePicActivity", "Bad request code given: "+requestCode);
+            Log.e("ChoosePicActivity", "Bad request code given: " + requestCode);
             return;
         }
 
@@ -118,14 +145,16 @@ public class ChoosePic extends AppCompatActivity {
 
     protected File createImageFile() throws IOException {
 
-        // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(timeStamp, ".jpg", storageDir);
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES);
 
+        File image = new File(storageDir, imageFileName + ".jpg");
         // Save a file: path for use with ACTION_VIEW intents
         photoPath = "file:" + image.getAbsolutePath();
         return image;
+
     }
 
     //https://stackoverflow.com/questions/10903754/input-text-dialog-android
