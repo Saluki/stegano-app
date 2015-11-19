@@ -12,7 +12,7 @@ import java.io.IOException;
 import ovh.gorillahack.steganoapp.algorithm.SteganoDecoder;
 import ovh.gorillahack.steganoapp.utils.Utils;
 
-public class ShowGallery extends AppCompatActivity {
+public class DecodeActivity extends AppCompatActivity {
 
     Bitmap picChosen;
 

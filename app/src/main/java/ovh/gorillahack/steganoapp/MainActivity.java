@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void lauchDecodeActivity(View v) {
-        Intent intent = new Intent(this, ShowGallery.class);
+        Intent intent = new Intent(this, DecodeActivity.class);
         startActivity(intent);
     }
 

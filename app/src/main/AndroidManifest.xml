@@ -28,7 +28,7 @@
             android:label="@string/title_activity_choose_pic"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ShowGallery"
+            android:name=".DecodeActivity"
             android:label="@string/title_activity_show_gallery"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
