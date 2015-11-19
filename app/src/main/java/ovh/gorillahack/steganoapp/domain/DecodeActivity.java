@@ -1,4 +1,4 @@
-package ovh.gorillahack.steganoapp;
+package ovh.gorillahack.steganoapp.domain;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -10,6 +10,7 @@ import android.view.View;
 
 import java.io.IOException;
 
+import ovh.gorillahack.steganoapp.R;
 import ovh.gorillahack.steganoapp.algorithm.SteganoDecoder;
 import ovh.gorillahack.steganoapp.utils.Utils;
 

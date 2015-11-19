@@ -2,15 +2,16 @@
 
     <!-- These settings headers are only used on tablets. -->
 
-    <header android:fragment="ovh.gorillahack.steganoapp.SettingsActivity$GeneralPreferenceFragment"
+    <header
+        android:fragment="ovh.gorillahack.steganoapp.domain.SettingsActivity$GeneralPreferenceFragment"
         android:title="@string/pref_header_general" />
 
     <header
-        android:fragment="ovh.gorillahack.steganoapp.SettingsActivity$NotificationPreferenceFragment"
+        android:fragment="ovh.gorillahack.steganoapp.domain.SettingsActivity$NotificationPreferenceFragment"
         android:title="@string/pref_header_notifications" />
 
     <header
-        android:fragment="ovh.gorillahack.steganoapp.SettingsActivity$DataSyncPreferenceFragment"
+        android:fragment="ovh.gorillahack.steganoapp.domain.SettingsActivity$DataSyncPreferenceFragment"
         android:title="@string/pref_header_data_sync" />
 
 </preference-headers>

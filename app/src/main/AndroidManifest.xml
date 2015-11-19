@@ -15,7 +15,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".MainActivity"
+            android:name=".domain.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,20 +24,20 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ChoosePic"
+            android:name=".domain.ChoosePic"
             android:label="@string/title_activity_choose_pic"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".DecodeActivity"
+            android:name=".domain.DecodeActivity"
             android:label="@string/title_activity_show_gallery"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".SettingsActivity"
+            android:name=".domain.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:parentActivityName=".MainActivity" >
+            android:parentActivityName=".domain.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="ovh.gorillahack.steganoapp.MainActivity" />
+                android:value=".domain.MainActivity" />
         </activity>
     </application>
 

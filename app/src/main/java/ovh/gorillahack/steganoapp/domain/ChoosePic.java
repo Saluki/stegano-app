@@ -1,4 +1,4 @@
-package ovh.gorillahack.steganoapp;
+package ovh.gorillahack.steganoapp.domain;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import ovh.gorillahack.steganoapp.R;
 import ovh.gorillahack.steganoapp.algorithm.SteganoEncoder;
 import ovh.gorillahack.steganoapp.utils.Utils;
 

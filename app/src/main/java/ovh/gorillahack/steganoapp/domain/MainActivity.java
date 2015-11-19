@@ -1,4 +1,4 @@
-package ovh.gorillahack.steganoapp;
+package ovh.gorillahack.steganoapp.domain;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import ovh.gorillahack.steganoapp.R;
 import ovh.gorillahack.steganoapp.utils.Utils;
 
 public class MainActivity extends AppCompatActivity {
