@@ -95,6 +95,7 @@ public class ChoosePic extends AppCompatActivity {
 
         if( data==null || data.getData()==null ) {
             Utils.buildTextViewPopUp(this, getString(R.string.error));
+            Log.e("ChoosePicActivity", "Data format was null");
             return;
         }
 
@@ -116,6 +117,7 @@ public class ChoosePic extends AppCompatActivity {
 
         } else {
             Utils.buildTextViewPopUp(this, getString(R.string.error));
+            Log.e("ChoosePicActivity", "Bad request code given: "+requestCode);
             return;
         }
 

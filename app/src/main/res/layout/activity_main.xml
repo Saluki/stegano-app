@@ -10,11 +10,11 @@
         android:layout_height="wrap_content"
         android:text="@string/encode"
         android:id="@+id/encodeBT"
-        android:layout_marginBottom="78dp"
+        android:layout_marginBottom="67dp"
+        android:onClick="launchEncodeActivity"
         android:layout_above="@+id/decodeBT"
-        android:layout_alignLeft="@+id/decodeBT"
-        android:layout_alignStart="@+id/decodeBT"
-        android:onClick="launchEncodeActivity" />
+        android:layout_toLeftOf="@+id/decodeBT"
+        android:layout_toStartOf="@+id/decodeBT" />
 
     <Button
         android:layout_width="wrap_content"
@@ -35,4 +35,13 @@
         android:layout_alignStart="@+id/decodeBT"
         android:layout_marginTop="61dp"
         android:onClick="showInfo" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="settings"
+        android:id="@+id/settingsBtn"
+        android:layout_below="@+id/decodeBT"
+        android:onClick="launchSettingsActivity" />
+
 </RelativeLayout>
