@@ -24,7 +24,6 @@ public class MainActivity extends AppCompatActivity {
         encode = (Button) findViewById(R.id.encodeBT);
         decode = (Button) findViewById(R.id.decodeBT);
         info = (Button) findViewById(R.id.infoBT);
-
     }
 
     public void launchEncodeActivity(View v) {
@@ -35,6 +34,10 @@ public class MainActivity extends AppCompatActivity {
     public void lauchDecodeActivity(View v) {
         Intent intent = new Intent(this, ShowGallery.class);
         startActivity(intent);
+    }
+
+    public void launchSettingsActivity(View v) {
+        startActivity(new Intent(this, SettingsActivity.class));
     }
 
     public void showInfo(View v) {
