@@ -130,6 +130,7 @@ public class ChoosePic extends AppCompatActivity {
 
     //https://stackoverflow.com/questions/10903754/input-text-dialog-android
     public void buildEditTextPopUp() {
+
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.messageToEnc);
 
@@ -153,6 +154,7 @@ public class ChoosePic extends AppCompatActivity {
                 }
             }
         });
+
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

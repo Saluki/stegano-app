@@ -3,6 +3,7 @@ package ovh.gorillahack.steganoapp.algorithm;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 
+import ovh.gorillahack.steganoapp.exceptions.SteganoEncodeException;
 import ovh.gorillahack.steganoapp.utils.SteganoUtils;
 
 public class SteganoEncoder {
@@ -15,11 +16,13 @@ public class SteganoEncoder {
         this.pictureBitmap = immutableBitmap.copy(immutableBitmap.getConfig(), true);
     }
 
-    public Bitmap encode(String text) {
+    public Bitmap encode(String text) throws SteganoEncodeException {
 
         if (text == null || text.isEmpty()) {
             throw new NullPointerException("Text to encode cannot be null or empty");
         }
+
+        SteganoUtils.checkTextFitting(this.pictureBitmap, text);
 
         int[] binarySequence = SteganoUtils.getBinarySequence(text);
         int binaryPtr = 0;

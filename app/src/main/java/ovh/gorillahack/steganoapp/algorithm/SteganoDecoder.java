@@ -5,6 +5,7 @@ import android.graphics.Color;
 
 import java.util.ArrayList;
 
+import ovh.gorillahack.steganoapp.exceptions.SteganoDecodeException;
 import ovh.gorillahack.steganoapp.utils.SteganoUtils;
 
 public class SteganoDecoder {
@@ -19,9 +20,10 @@ public class SteganoDecoder {
         this.pictureBitmap = pictureBitmap;
     }
 
-    public String decode() {
+    public String decode() throws SteganoDecodeException {
 
         ArrayList<Integer> extractedBits = new ArrayList<>();
+        int decodePtr = 0;
 
         for (int y = 0; y < this.pictureBitmap.getHeight(); y++) {
             for (int x = 0; x < this.pictureBitmap.getWidth(); x++) {
@@ -30,6 +32,12 @@ public class SteganoDecoder {
                 int blueColor = Color.blue(argbColor);
 
                 extractedBits.add(blueColor%2);
+
+                // TODO Remove for real limits based on metadata
+                if( decodePtr>=DECODE_LIMIT_DEV ) {
+                    return SteganoUtils.getStringBinaryList(extractedBits);
+                }
+                decodePtr++;
             }
         }
 
