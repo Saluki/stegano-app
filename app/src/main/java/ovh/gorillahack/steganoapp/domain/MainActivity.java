@@ -1,17 +1,29 @@
 package ovh.gorillahack.steganoapp.domain;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 
 import ovh.gorillahack.steganoapp.R;
 import ovh.gorillahack.steganoapp.utils.Utils;
 
 public class MainActivity extends AppCompatActivity {
+
+    //TODO: add localisation (values/strings en plusieurs langues(FR-EN))
+    //TODO: check passing variables between activities (e.g. PREFS_NAME)
+    //TODO: settings reworking (Javier is on it)
+    //TODO: IF we have time, when taking picture, work with full pic and not with thumbnail
+
+
+    RelativeLayout layout = (RelativeLayout) findViewById(R.id.activity_main_layout);
+    public static final String PREFS_NAME = "Preferences";
 
     Button encode;
     Button decode;
@@ -21,10 +33,17 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        int r = settings.getInt("r", 0);
+        int b = settings.getInt("b", 0);
+        int g = settings.getInt("g", 0);
+        layout.setBackgroundColor(Color.argb(255, r, b, g));
 
         encode = (Button) findViewById(R.id.encodeBT);
         decode = (Button) findViewById(R.id.decodeBT);
         info = (Button) findViewById(R.id.infoBT);
+
+
     }
 
     public void launchEncodeActivity(View v) {

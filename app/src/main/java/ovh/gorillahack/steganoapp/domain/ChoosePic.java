@@ -3,7 +3,9 @@ package ovh.gorillahack.steganoapp.domain;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -12,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import java.io.File;
@@ -24,6 +27,8 @@ import ovh.gorillahack.steganoapp.algorithm.SteganoEncoder;
 import ovh.gorillahack.steganoapp.utils.Utils;
 
 public class ChoosePic extends AppCompatActivity {
+    RelativeLayout layout = (RelativeLayout) findViewById(R.id.choose_pic_layout);
+    public static final String PREFS_NAME = "Preferences";
 
     private static final int PICK_IMAGE = 1;
     private static final int TAKE_PICTURE = 2;
@@ -39,6 +44,11 @@ public class ChoosePic extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_pic);
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        int r = settings.getInt("r", 0);
+        int b = settings.getInt("b", 0);
+        int g = settings.getInt("g", 0);
+        layout.setBackgroundColor(Color.argb(255, r, b, g));
     }
 
     public void launchCamera(View view) {
@@ -119,8 +129,8 @@ public class ChoosePic extends AppCompatActivity {
         buildEditTextPopUp();
     }
 
+    // https://developer.android.com/training/camera/photobasics.html
     protected File createImageFile() throws IOException {
-
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
         File storageDir = Environment.getExternalStoragePublicDirectory(

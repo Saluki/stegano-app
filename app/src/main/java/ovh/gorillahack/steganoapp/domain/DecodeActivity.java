@@ -1,12 +1,15 @@
 package ovh.gorillahack.steganoapp.domain;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.RelativeLayout;
 
 import java.io.IOException;
 
@@ -15,6 +18,9 @@ import ovh.gorillahack.steganoapp.algorithm.SteganoDecoder;
 import ovh.gorillahack.steganoapp.utils.Utils;
 
 public class DecodeActivity extends AppCompatActivity {
+    RelativeLayout layout = (RelativeLayout) findViewById(R.id.show_gallery_layout);
+    public static final String PREFS_NAME = "Preferences";
+
     private static final int PICK_IMAGE = 1;
 
     private static final String INTENT_IMAGE_TYPE = "image/*";
@@ -24,6 +30,11 @@ public class DecodeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_gallery);
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        int r = settings.getInt("r", 0);
+        int b = settings.getInt("b", 0);
+        int g = settings.getInt("g", 0);
+        layout.setBackgroundColor(Color.argb(255, r, b, g));
     }
 
     @Override
