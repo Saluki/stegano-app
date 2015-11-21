@@ -21,8 +21,7 @@ public class MainActivity extends AppCompatActivity {
     //TODO: settings reworking (Javier is on it)
     //TODO: IF we have time, when taking picture, work with full pic and not with thumbnail
 
-
-    RelativeLayout layout = (RelativeLayout) findViewById(R.id.activity_main_layout);
+    RelativeLayout layout;
     public static final String PREFS_NAME = "Preferences";
 
     Button encode;
@@ -32,7 +31,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
+        layout = (RelativeLayout) findViewById(R.id.activity_main_layout);
+
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
         int r = settings.getInt("r", 0);
         int b = settings.getInt("b", 0);
@@ -42,8 +44,6 @@ public class MainActivity extends AppCompatActivity {
         encode = (Button) findViewById(R.id.encodeBT);
         decode = (Button) findViewById(R.id.decodeBT);
         info = (Button) findViewById(R.id.infoBT);
-
-
     }
 
     public void launchEncodeActivity(View v) {

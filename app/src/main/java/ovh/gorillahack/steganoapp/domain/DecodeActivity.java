@@ -18,7 +18,8 @@ import ovh.gorillahack.steganoapp.algorithm.SteganoDecoder;
 import ovh.gorillahack.steganoapp.utils.Utils;
 
 public class DecodeActivity extends AppCompatActivity {
-    RelativeLayout layout = (RelativeLayout) findViewById(R.id.show_gallery_layout);
+
+    RelativeLayout layout;
     public static final String PREFS_NAME = "Preferences";
 
     private static final int PICK_IMAGE = 1;
@@ -29,7 +30,10 @@ public class DecodeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_show_gallery);
+        layout = (RelativeLayout) findViewById(R.id.show_gallery_layout);
+
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
         int r = settings.getInt("r", 0);
         int b = settings.getInt("b", 0);
