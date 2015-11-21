@@ -8,7 +8,6 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -17,7 +16,6 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -26,19 +24,15 @@ import ovh.gorillahack.steganoapp.R;
 import ovh.gorillahack.steganoapp.algorithm.SteganoEncoder;
 import ovh.gorillahack.steganoapp.utils.Utils;
 
-public class ChoosePic extends AppCompatActivity {
+public class EncodeActivity extends AppCompatActivity {
 
     RelativeLayout layout;
-    public static final String PREFS_NAME = "Preferences";
 
     private static final int PICK_IMAGE = 1;
     private static final int TAKE_PICTURE = 2;
-    private static final String INTENT_IMAGE_TYPE = "image/*";
 
-    String photoPath;
-    String messsageToEncode = "";
-
-    Bitmap pictureChoosen;
+    String messageToEncode = "";
+    Bitmap pictureChosen;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +41,7 @@ public class ChoosePic extends AppCompatActivity {
         setContentView(R.layout.activity_choose_pic);
         layout = (RelativeLayout) findViewById(R.id.choose_pic_layout);
 
-        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        SharedPreferences settings = getSharedPreferences(Utils.PREFS_NAME, 0);
         int r = settings.getInt("r", 0);
         int b = settings.getInt("b", 0);
         int g = settings.getInt("g", 0);
@@ -55,37 +49,16 @@ public class ChoosePic extends AppCompatActivity {
     }
 
     public void launchCamera(View view) {
-/*
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        // Ensure that there's a camera activity to handle the intent
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            // Create the File where the photo should go
-            File photoFile = null;
-            try {
-                photoFile = createImageFile();
-            } catch (IOException ex) {
-                // Error occurred while creating the File
-                Toast.makeText(getApplicationContext(), R.string.error_creating_file, Toast.LENGTH_LONG).show();
-                Log.e("error",ex.getMessage());
-            }
-            // Continue only if the File was successfully created
-            if (photoFile != null) {
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
-                        Uri.fromFile(photoFile));
-                startActivityForResult(takePictureIntent, TAKE_PICTURE);
-            }
-        }
-    */
+
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, MediaStore.Images.Media.EXTERNAL_CONTENT_URI.getPath());
         startActivityForResult(intent, TAKE_PICTURE);
-
     }
 
     public void showGallery(View view) {
 
         Intent pickIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        pickIntent.setType(INTENT_IMAGE_TYPE);
+        pickIntent.setType(Utils.INTENT_IMAGE_TYPE);
 
         Intent chooserIntent = Intent.createChooser(getIntent(), "Select Image");
         chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[]{pickIntent});
@@ -99,10 +72,9 @@ public class ChoosePic extends AppCompatActivity {
 
         if (resultCode != RESULT_OK) {
             Toast.makeText(getApplicationContext(), R.string.choosepic_result_failed, Toast.LENGTH_LONG).show();
-            Log.e("activity result error:", "resutl code: " + resultCode + "   request code:" + requestCode);
+            Log.e("Activity result error:", "result code: " + resultCode + " request code:" + requestCode);
             return;
         }
-
 
         if (requestCode == PICK_IMAGE) {
             if (data == null || data.getData() == null) {
@@ -112,7 +84,7 @@ public class ChoosePic extends AppCompatActivity {
             }
             Uri uri = data.getData();
             try {
-                this.pictureChoosen = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                this.pictureChosen = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
             } catch (IOException e) {
                 Toast.makeText(getApplicationContext(), R.string.error, Toast.LENGTH_LONG).show();
                 Log.e("ChoosePicActivity", "Could not retrieve media: " + e.getMessage());
@@ -121,7 +93,7 @@ public class ChoosePic extends AppCompatActivity {
 
         } else if (requestCode == TAKE_PICTURE) {
             Bundle extras = data.getExtras();
-            pictureChoosen = (Bitmap) extras.get("data");
+            pictureChosen = (Bitmap) extras.get("data");
 
         } else {
             Utils.buildTextViewPopUp(this, getString(R.string.error));
@@ -130,20 +102,6 @@ public class ChoosePic extends AppCompatActivity {
         }
 
         buildEditTextPopUp();
-    }
-
-    // https://developer.android.com/training/camera/photobasics.html
-    protected File createImageFile() throws IOException {
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES);
-
-        File image = new File(storageDir, imageFileName + ".jpg");
-        // Save a file: path for use with ACTION_VIEW intents
-        photoPath = "file:" + image.getAbsolutePath();
-        return image;
-
     }
 
     //https://stackoverflow.com/questions/10903754/input-text-dialog-android
@@ -160,13 +118,13 @@ public class ChoosePic extends AppCompatActivity {
         builder.setPositiveButton(R.string.encode, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                messsageToEncode = input.getText().toString();
-                SteganoEncoder encoder = new SteganoEncoder(pictureChoosen);
+                messageToEncode = input.getText().toString();
+                SteganoEncoder encoder = new SteganoEncoder(pictureChosen);
                 String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-                MediaStore.Images.Media.insertImage(getContentResolver(), pictureChoosen, timeStamp + ".jpg", null);
+                MediaStore.Images.Media.insertImage(getContentResolver(), pictureChosen, timeStamp + ".jpg", null);
                 Utils.buildTextViewPopUp(builder.getContext(), getString(R.string.image_encrypt_succ));
                 try {
-                    encoder.encode(messsageToEncode);
+                    encoder.encode(messageToEncode);
                 } catch (Exception e) {
                     Utils.buildTextViewPopUp(builder.getContext(), getString(R.string.error) + e.getMessage());
                 }
@@ -182,6 +140,4 @@ public class ChoosePic extends AppCompatActivity {
 
         builder.show();
     }
-
-
 }

@@ -12,7 +12,11 @@ import ovh.gorillahack.steganoapp.R;
  */
 public class Utils {
 
-    public static void buildTextViewPopUp(Context c, String text) {//TODO: add title in parameters
+    public static final String PREFS_NAME = "Preferences";
+    public static final String INTENT_IMAGE_TYPE = "image/*";
+
+    public static void buildTextViewPopUp(Context c, String text) {
+
         final AlertDialog.Builder builder = new AlertDialog.Builder(c);
         builder.setTitle(R.string.info);
 

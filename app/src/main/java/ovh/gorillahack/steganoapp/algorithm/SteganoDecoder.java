@@ -33,7 +33,6 @@ public class SteganoDecoder {
 
                 extractedBits.add(blueColor%2);
 
-                // TODO Remove for real limits based on metadata
                 if( decodePtr>=DECODE_LIMIT_DEV ) {
                     return SteganoUtils.getStringBinaryList(extractedBits);
                 }

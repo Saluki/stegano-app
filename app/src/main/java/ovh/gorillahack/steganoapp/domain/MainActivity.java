@@ -16,13 +16,7 @@ import ovh.gorillahack.steganoapp.utils.Utils;
 
 public class MainActivity extends AppCompatActivity {
 
-    //TODO: add localisation (values/strings en plusieurs langues(FR-EN))
-    //TODO: check passing variables between activities (e.g. PREFS_NAME)
-    //TODO: settings reworking (Javier is on it)
-    //TODO: IF we have time, when taking picture, work with full pic and not with thumbnail
-
     RelativeLayout layout;
-    public static final String PREFS_NAME = "Preferences";
 
     Button encode;
     Button decode;
@@ -35,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         layout = (RelativeLayout) findViewById(R.id.activity_main_layout);
 
-        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        SharedPreferences settings = getSharedPreferences(Utils.PREFS_NAME, 0);
         int r = settings.getInt("r", 0);
         int b = settings.getInt("b", 0);
         int g = settings.getInt("g", 0);
@@ -47,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void launchEncodeActivity(View v) {
-        Intent intent = new Intent(this, ChoosePic.class);
+        Intent intent = new Intent(this, EncodeActivity.class);
         startActivity(intent);
     }
 

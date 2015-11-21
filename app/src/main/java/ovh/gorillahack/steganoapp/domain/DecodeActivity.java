@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 
@@ -19,13 +20,10 @@ import ovh.gorillahack.steganoapp.utils.Utils;
 
 public class DecodeActivity extends AppCompatActivity {
 
-    RelativeLayout layout;
-    public static final String PREFS_NAME = "Preferences";
-
     private static final int PICK_IMAGE = 1;
 
-    private static final String INTENT_IMAGE_TYPE = "image/*";
-    Bitmap picChosen;
+    protected RelativeLayout layout;
+    protected Bitmap picChosen;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +32,7 @@ public class DecodeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_show_gallery);
         layout = (RelativeLayout) findViewById(R.id.show_gallery_layout);
 
-        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        SharedPreferences settings = getSharedPreferences(Utils.PREFS_NAME, 0);
         int r = settings.getInt("r", 0);
         int b = settings.getInt("b", 0);
         int g = settings.getInt("g", 0);
@@ -57,21 +55,22 @@ public class DecodeActivity extends AppCompatActivity {
             Utils.buildTextViewPopUp(this, getString(R.string.error));
             return;
         }
-        String message = null;
+
         try {
-            message = (new SteganoDecoder(this.picChosen)).decode();
-        } catch (Exception e) {
-
+            String message = (new SteganoDecoder(this.picChosen)).decode();
+            String text = getString(R.string.this_is_the_mess) + message;
+            Utils.buildTextViewPopUp(this, text);
         }
-        String text = getString(R.string.this_is_the_mess) + message;
-
-        Utils.buildTextViewPopUp(this, text);
+        catch (Exception e) {
+            Log.w("DecodeActivity", "Could not decode text in image: "+e.getMessage(), e);
+            Utils.buildTextViewPopUp(this, getString(R.string.decode_decoding_error));
+        }
     }
 
     public void showGallery(View view) {
 
         Intent pickIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        pickIntent.setType(INTENT_IMAGE_TYPE);
+        pickIntent.setType(Utils.INTENT_IMAGE_TYPE);
 
         Intent chooserIntent = Intent.createChooser(getIntent(), "Select Image");
         chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[]{pickIntent});

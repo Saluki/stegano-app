@@ -24,7 +24,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".domain.ChoosePic"
+            android:name=".domain.EncodeActivity"
             android:label="@string/title_activity_choose_pic"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
