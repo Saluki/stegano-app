@@ -48,10 +48,15 @@ public class SteganoUtils {
 
         for(Integer currentBit : binaryList) {
 
-            charBuilder.append(""+currentBit);
+            String currentBitToString = ""+currentBit;
+            charBuilder.append(currentBitToString);
 
             if( charPtr == UTF8_SIZE-1 ) {
-                textBuilder.append(Integer.parseInt(charBuilder.toString()));
+
+                char decodedCharacter = (char) Integer.parseInt(charBuilder.toString(), 2);
+                textBuilder.append(decodedCharacter);
+
+                charBuilder = new StringBuilder();
                 charPtr = 0;
             }
             charPtr++;

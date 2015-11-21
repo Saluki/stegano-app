@@ -28,15 +28,15 @@ public class SteganoDecoder {
         for (int y = 0; y < this.pictureBitmap.getHeight(); y++) {
             for (int x = 0; x < this.pictureBitmap.getWidth(); x++) {
 
-                int argbColor = this.pictureBitmap.getPixel(x, y);
-                int blueColor = Color.blue(argbColor);
-
-                extractedBits.add(blueColor%2);
-
                 if( decodePtr>=DECODE_LIMIT_DEV ) {
                     return SteganoUtils.getStringBinaryList(extractedBits);
                 }
                 decodePtr++;
+
+                int argbColor = this.pictureBitmap.getPixel(x, y);
+                int blueColor = Color.blue(argbColor);
+
+                extractedBits.add(blueColor%2);
             }
         }
 

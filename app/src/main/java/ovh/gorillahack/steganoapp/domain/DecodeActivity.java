@@ -58,7 +58,7 @@ public class DecodeActivity extends AppCompatActivity {
             Utils.buildTextViewPopUp(this, getString(R.string.info), text);
         }
         catch (Exception e) {
-            Log.w("DecodeActivity", "Could not decode text in image: "+e.getMessage(), e);
+            Log.e("DecodeActivity", "Could not decode text in image: "+e.getMessage(), e);
             Utils.buildTextViewPopUp(this, getString(R.string.global_error_occurred), getString(R.string.decode_decoding_error));
         }
     }
