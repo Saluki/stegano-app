@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void showInfo(View v) {
-        Utils.buildTextViewPopUp(this, getString(R.string.informations));
+        Utils.buildTextViewPopUp(this, getString(R.string.info), getString(R.string.informations));
     }
 
     @Override

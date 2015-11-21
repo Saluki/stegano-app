@@ -78,7 +78,7 @@ public class EncodeActivity extends AppCompatActivity {
 
         if (requestCode == PICK_IMAGE) {
             if (data == null || data.getData() == null) {
-                Utils.buildTextViewPopUp(this, getString(R.string.error));
+                Utils.buildTextViewPopUp(this, getString(R.string.global_error_occurred), getString(R.string.error));
                 Log.e("ChoosePicActivity", "Data format was null");
                 return;
             }
@@ -96,7 +96,7 @@ public class EncodeActivity extends AppCompatActivity {
             pictureChosen = (Bitmap) extras.get("data");
 
         } else {
-            Utils.buildTextViewPopUp(this, getString(R.string.error));
+            Utils.buildTextViewPopUp(this, getString(R.string.global_error_occurred), getString(R.string.error));
             Log.e("ChoosePicActivity", "Bad request code given: " + requestCode);
             return;
         }
@@ -120,13 +120,13 @@ public class EncodeActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 messageToEncode = input.getText().toString();
                 SteganoEncoder encoder = new SteganoEncoder(pictureChosen);
-                String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+                String timeStamp = Utils.getCurrentTimeStamp();
                 MediaStore.Images.Media.insertImage(getContentResolver(), pictureChosen, timeStamp + ".jpg", null);
-                Utils.buildTextViewPopUp(builder.getContext(), getString(R.string.image_encrypt_succ));
+                Utils.buildTextViewPopUp(builder.getContext(), getString(R.string.info), getString(R.string.image_encrypt_succ));
                 try {
                     encoder.encode(messageToEncode);
                 } catch (Exception e) {
-                    Utils.buildTextViewPopUp(builder.getContext(), getString(R.string.error) + e.getMessage());
+                    Utils.buildTextViewPopUp(builder.getContext(), getString(R.string.global_error_occurred), getString(R.string.error) + e.getMessage());
                 }
             }
         });
