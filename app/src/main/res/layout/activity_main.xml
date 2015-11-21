@@ -7,47 +7,80 @@
     tools:context=".MainActivity"
     android:id="@+id/activity_main_layout">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/encode"
-        android:id="@+id/encodeBT"
-        android:onClick="launchEncodeActivity"
-        android:layout_alignParentTop="true"
-        android:layout_alignLeft="@+id/decodeBT"
-        android:layout_alignStart="@+id/decodeBT"
-        android:layout_marginTop="58dp" />
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/decode"
-        android:id="@+id/decodeBT"
-        android:onClick="lauchDecodeActivity"
-        android:layout_below="@+id/encodeBT"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="41dp" />
+        <ImageView
+            android:layout_width="147dp"
+            android:layout_height="200dp"
+            android:id="@+id/imageView"
+            android:src="@drawable/locker"
+            android:layout_gravity="center_horizontal" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/info"
-        android:id="@+id/infoBT"
-        android:onClick="showInfo"
-        android:layout_below="@+id/settingsBtn"
-        android:layout_alignRight="@+id/settingsBtn"
-        android:layout_alignEnd="@+id/settingsBtn"
-        android:layout_marginTop="52dp" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="settings"
-        android:id="@+id/settingsBtn"
-        android:onClick="launchSettingsActivity"
-        android:layout_below="@+id/decodeBT"
-        android:layout_alignLeft="@+id/decodeBT"
-        android:layout_alignStart="@+id/decodeBT"
-        android:layout_marginTop="65dp" />
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/encode"
+                android:id="@+id/encodeBT"
+                android:onClick="launchEncodeActivity"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:padding="40dp"
+                android:textStyle="bold"
+                android:gravity="center_vertical"
+                android:layout_marginRight="5dp" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/decode"
+                android:id="@+id/decodeBT"
+                android:onClick="lauchDecodeActivity"
+                android:padding="40dp"
+                android:layout_alignTop="@+id/encodeBT"
+                android:layout_toRightOf="@+id/encodeBT"
+                android:layout_toEndOf="@+id/encodeBT"
+                android:textStyle="bold"
+                android:layout_marginLeft="5dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="bottom|right">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/info"
+                android:id="@+id/infoBT"
+                android:onClick="showInfo"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="settings"
+                android:id="@+id/settingsBtn"
+                android:onClick="launchSettingsActivity"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true" />
+
+        </LinearLayout>
+
+    </LinearLayout>
 
 </RelativeLayout>

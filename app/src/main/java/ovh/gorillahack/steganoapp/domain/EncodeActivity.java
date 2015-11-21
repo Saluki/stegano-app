@@ -41,11 +41,7 @@ public class EncodeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_choose_pic);
         layout = (RelativeLayout) findViewById(R.id.choose_pic_layout);
 
-        SharedPreferences settings = getSharedPreferences(Utils.PREFS_NAME, 0);
-        int r = settings.getInt("r", 0);
-        int b = settings.getInt("b", 0);
-        int g = settings.getInt("g", 0);
-        layout.setBackgroundColor(Color.argb(255, r, b, g));
+        Utils.changeBackgroundColor(getSharedPreferences(Utils.PREFS_NAME, 0), layout);
     }
 
     public void launchCamera(View view) {

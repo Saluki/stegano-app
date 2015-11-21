@@ -32,11 +32,7 @@ public class DecodeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_show_gallery);
         layout = (RelativeLayout) findViewById(R.id.show_gallery_layout);
 
-        SharedPreferences settings = getSharedPreferences(Utils.PREFS_NAME, 0);
-        int r = settings.getInt("r", 0);
-        int b = settings.getInt("b", 0);
-        int g = settings.getInt("g", 0);
-        layout.setBackgroundColor(Color.argb(255, r, b, g));
+        Utils.changeBackgroundColor(getSharedPreferences(Utils.PREFS_NAME, 0), layout);
     }
 
     @Override

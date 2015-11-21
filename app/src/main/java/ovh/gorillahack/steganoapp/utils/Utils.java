@@ -3,6 +3,9 @@ package ovh.gorillahack.steganoapp.utils;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.security.InvalidParameterException;
@@ -48,5 +51,13 @@ public class Utils {
 
     public static String getCurrentTimeStamp() {
         return new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
+    }
+
+    public static void changeBackgroundColor(SharedPreferences settings, RelativeLayout layout) {
+
+        int r = settings.getInt("r", 255);
+        int b = settings.getInt("b", 255);
+        int g = settings.getInt("g", 255);
+        layout.setBackgroundColor(Color.argb(255, r, b, g));
     }
 }

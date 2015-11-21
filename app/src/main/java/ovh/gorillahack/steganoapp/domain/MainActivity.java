@@ -29,11 +29,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         layout = (RelativeLayout) findViewById(R.id.activity_main_layout);
 
-        SharedPreferences settings = getSharedPreferences(Utils.PREFS_NAME, 0);
-        int r = settings.getInt("r", 0);
-        int b = settings.getInt("b", 0);
-        int g = settings.getInt("g", 0);
-        layout.setBackgroundColor(Color.argb(255, r, b, g));
+        Utils.changeBackgroundColor(getSharedPreferences(Utils.PREFS_NAME, 0), layout);
 
         encode = (Button) findViewById(R.id.encodeBT);
         decode = (Button) findViewById(R.id.decodeBT);
