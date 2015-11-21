@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">SteganoApp</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Préférences</string>
+    <string name="encode">Encoder</string>
+    <string name="decode">Décoder</string>
+    <string name="info">Informations</string>
+    <string name="global_error_occurred">Une erreur est survenue</string>
+    <string name="title_activity_choose_pic">choosePic</string>
+    <string name="title_activity_show_gallery">ShowGallery</string>
+    <string name="fromGallery">Choisir une image</string>
+    <string name="lauchCamera">Prendre une photo</string>
+    <string name="informations">Cette application permet d\'encoder un message textuel dans une image en utilisant l\'algorithme de watermarking LSB</string>
+    <string name="messageToEnc">Message à encoder:</string>
+    <string name="cancel">Annuler</string>
+    <string name="image_encrypt_succ">L\'image a bien été encodée\nElle se trouve dans votre gallerie photo</string>
+    <string name="error">L\'application a rencontré une erreur</string>
+    <string name="ok">OK</string>
+    <string name="choose_image_to_decode">Choisir une image à décoder</string>
+    <string name="this_is_the_mess">Ceci est le messsage: \n</string>
+    <string name="choosepic_camera_not_found">Désolé, la camera n\'est pas accessible</string>
+    <string name="choosepic_picture_not_created">Désolé, impossible de créer l\'image</string>
+    <string name="choosepic_result_failed">Echec lors de la récuperation de l\'image</string>
+    <string name="error_creating_file">Erreur lors de la création du fichier</string>
+    <string name="decode_decoding_error">Impossible de décoder le texte</string>
+
+</resources>
