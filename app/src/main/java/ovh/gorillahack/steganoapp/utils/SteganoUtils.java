@@ -15,7 +15,7 @@ public class SteganoUtils {
     public static int[] getBinarySequence(String text) {
 
         if( text==null ) {
-            throw new NullPointerException("Text cannot be null");
+            throw new NullPointerException("Given text cannot be null");
         }
 
         char[] textArray = text.toCharArray();
@@ -37,8 +37,9 @@ public class SteganoUtils {
 
     public static String getStringBinaryList(ArrayList<Integer> binaryList) throws SteganoDecodeException{
 
-        if( binaryList.size()%UTF8_SIZE != 0 ) {
-            throw new SteganoDecodeException("Wrong binary size");
+        int binaryListSize = binaryList.size();
+        if( binaryListSize%UTF8_SIZE != 0 ) {
+            throw new SteganoDecodeException("Wrong binary size, expected a divisor of "+UTF8_SIZE+" but got "+binaryListSize);
         }
 
         StringBuilder textBuilder = new StringBuilder();
