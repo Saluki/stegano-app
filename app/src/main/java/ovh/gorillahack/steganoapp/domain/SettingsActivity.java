@@ -119,6 +119,12 @@ public class SettingsActivity extends AppCompatActivity {
         saveColors();
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        saveColors();
+    }
+
     private void saveColors() {
         SharedPreferences.Editor e = getSharedPreferences(Utils.PREFS_NAME, 0).edit();
         e.putInt("r", r);

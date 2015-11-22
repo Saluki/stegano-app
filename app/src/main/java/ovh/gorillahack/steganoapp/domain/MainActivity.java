@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void launchSettingsActivity(View v) {
+    public void launchSettingsActivity() {
         startActivity(new Intent(this, SettingsActivity.class));
     }
 
@@ -60,6 +60,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        Utils.changeBackgroundColor(getSharedPreferences(Utils.PREFS_NAME, 0), layout);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
@@ -68,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            return true;
+            launchSettingsActivity();
         }
 
         return super.onOptionsItemSelected(item);

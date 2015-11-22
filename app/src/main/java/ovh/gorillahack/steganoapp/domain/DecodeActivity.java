@@ -1,9 +1,7 @@
 package ovh.gorillahack.steganoapp.domain;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -29,7 +27,7 @@ public class DecodeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_show_gallery);
+        setContentView(R.layout.activity_decode);
         layout = (RelativeLayout) findViewById(R.id.show_gallery_layout);
 
         Utils.changeBackgroundColor(getSharedPreferences(Utils.PREFS_NAME, 0), layout);
