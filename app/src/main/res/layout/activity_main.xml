@@ -44,7 +44,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/decode"
                 android:id="@+id/decodeBT"
-                android:onClick="lauchDecodeActivity"
+                android:onClick="launchDecodeActivity"
                 android:padding="40dp"
                 android:layout_alignTop="@+id/encodeBT"
                 android:layout_toRightOf="@+id/encodeBT"
