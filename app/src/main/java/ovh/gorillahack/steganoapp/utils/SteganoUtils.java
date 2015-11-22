@@ -11,6 +11,7 @@ import ovh.gorillahack.steganoapp.exceptions.SteganoEncodeException;
 public class SteganoUtils {
 
     public static final int UTF8_SIZE = 8;
+    public static final int MARGIN_SIZE = 91;
 
     public static int[] getBinarySequence(String text) {
 
@@ -33,6 +34,29 @@ public class SteganoUtils {
         }
 
         return bitList;
+    }
+
+    public static int[] getMarginSequence(int textLength) throws SteganoEncodeException {
+
+        if( textLength<0 ) {
+            throw new SteganoEncodeException("Text length cannot be negative");
+        }
+
+        if( textLength>1024 ) {
+            throw new SteganoEncodeException("Text length cannot exceed 1024 characters");
+        }
+
+        int[] binaryMargin = new int[MARGIN_SIZE];
+        char[] stringMargin = Integer.toBinaryString(textLength).toCharArray();
+
+        int binaryPtr = binaryMargin.length-1;
+        for(int stringPtr=stringMargin.length-1; stringPtr>=0; stringPtr--) {
+
+            binaryMargin[binaryPtr] = Integer.parseInt(""+stringMargin[stringPtr]);
+            binaryPtr--;
+        }
+
+        return binaryMargin;
     }
 
     public static String getStringBinaryList(ArrayList<Integer> binaryList) throws SteganoDecodeException{
@@ -76,17 +100,4 @@ public class SteganoUtils {
         }
     }
 
-    public static void checkTextFitting(Bitmap pictureBitmap, String text) throws SteganoEncodeException {
-
-        if( text==null || pictureBitmap==null ) {
-            throw new NullPointerException("Bitmap or text could not be null");
-        }
-
-        int textSize = text.length()*UTF8_SIZE;
-        int pictureSize = pictureBitmap.getWidth()*pictureBitmap.getHeight();
-
-        if( textSize >= pictureSize ) {
-            throw new SteganoEncodeException("Text size too large for picture");
-        }
-    }
 }

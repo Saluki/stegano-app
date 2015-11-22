@@ -73,11 +73,13 @@ public class EncodeActivity extends AppCompatActivity {
         }
 
         if (requestCode == PICK_IMAGE) {
+
             if (data == null || data.getData() == null) {
                 Utils.buildTextViewPopUp(this, getString(R.string.global_error_occurred), getString(R.string.error));
                 Log.e("ChoosePicActivity", "Data format was null");
                 return;
             }
+
             Uri uri = data.getData();
             try {
                 this.pictureChosen = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
@@ -88,6 +90,7 @@ public class EncodeActivity extends AppCompatActivity {
             }
 
         } else if (requestCode == TAKE_PICTURE) {
+
             Bundle extras = data.getExtras();
             pictureChosen = (Bitmap) extras.get("data");
 
@@ -114,11 +117,13 @@ public class EncodeActivity extends AppCompatActivity {
         builder.setPositiveButton(R.string.encode, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+
                 messageToEncode = input.getText().toString();
                 SteganoEncoder encoder = new SteganoEncoder(pictureChosen);
                 String timeStamp = Utils.getCurrentTimeStamp();
                 MediaStore.Images.Media.insertImage(getContentResolver(), pictureChosen, timeStamp + ".jpg", null);
                 Utils.buildTextViewPopUp(builder.getContext(), getString(R.string.info), getString(R.string.image_encrypt_succ));
+
                 try {
                     encoder.encode(messageToEncode);
                 } catch (Exception e) {
