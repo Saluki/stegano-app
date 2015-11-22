@@ -35,5 +35,7 @@
     <string name="settings_title">Choose backround color</string>
     <string name="Choose_blue_value">Choose blue value</string>
     <string name="choose_red_value">Choose red value</string>
+    <string name="reset_to_previous_color">Reset to previous color</string>
+    <string name="set_to_white">Set to white</string>
 
 </resources>

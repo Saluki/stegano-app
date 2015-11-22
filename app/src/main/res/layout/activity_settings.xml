@@ -119,4 +119,26 @@
         android:id="@+id/settings_title_TV"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/reset_to_previous_color"
+        android:id="@+id/resetToPrevColBT"
+        android:onClick="resetToPreviousColor"
+        android:layout_alignTop="@+id/setToWhiteBT"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/set_to_white"
+        android:id="@+id/setToWhiteBT"
+        android:onClick="setToWhite"
+        android:layout_below="@+id/blueSeekBar"
+        android:layout_alignRight="@+id/blueSeekBar"
+        android:layout_alignEnd="@+id/blueSeekBar"
+        android:layout_marginTop="30dp" />
+
 </RelativeLayout>
