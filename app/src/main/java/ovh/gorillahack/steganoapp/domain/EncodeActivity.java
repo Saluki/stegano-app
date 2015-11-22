@@ -10,10 +10,14 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -22,6 +26,7 @@ import java.util.Date;
 
 import ovh.gorillahack.steganoapp.R;
 import ovh.gorillahack.steganoapp.algorithm.SteganoEncoder;
+import ovh.gorillahack.steganoapp.exceptions.SteganoEncodeException;
 import ovh.gorillahack.steganoapp.utils.Utils;
 
 public class EncodeActivity extends AppCompatActivity {
@@ -30,6 +35,9 @@ public class EncodeActivity extends AppCompatActivity {
 
     private static final int PICK_IMAGE = 1;
     private static final int TAKE_PICTURE = 2;
+
+    protected EditText messageMultipleInput;
+    protected TextView countMessageLabel;
 
     String messageToEncode = "";
     Bitmap pictureChosen;
@@ -42,6 +50,29 @@ public class EncodeActivity extends AppCompatActivity {
         layout = (RelativeLayout) findViewById(R.id.choose_pic_layout);
 
         Utils.changeBackgroundColor(getSharedPreferences(Utils.PREFS_NAME, 0), layout);
+
+        messageMultipleInput = (EditText) findViewById(R.id.messageMultipleInput);
+        countMessageLabel = (TextView) findViewById(R.id.countMessageLabel);
+
+        TextWatcher inputWatcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                int messageLength = messageMultipleInput.length();
+                countMessageLabel.setText(messageLength+" / 1024");
+
+                if( messageLength>1024 ) {
+                    messageMultipleInput.setTextColor(Color.RED);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        };
+        messageMultipleInput.addTextChangedListener(inputWatcher);
     }
 
     public void launchCamera(View view) {
@@ -100,11 +131,32 @@ public class EncodeActivity extends AppCompatActivity {
             return;
         }
 
-        buildEditTextPopUp();
+        try {
+            encodeMessageInBitmap();
+        }
+        catch(SteganoEncodeException e) {
+
+            // TODO Error feedback
+            Log.e("EncodeActivity", "Could not encode message: "+e.getMessage(), e);
+            return;
+        }
+
+        Intent mainIntent = new Intent(this, ovh.gorillahack.steganoapp.domain.MainActivity.class);
+        startActivity(mainIntent);
+    }
+
+    protected void encodeMessageInBitmap() throws SteganoEncodeException {
+
+        messageToEncode = messageMultipleInput.getText().toString();
+        SteganoEncoder encoder = new SteganoEncoder(pictureChosen);
+        String timeStamp = Utils.getCurrentTimeStamp();
+
+        MediaStore.Images.Media.insertImage(getContentResolver(), pictureChosen, timeStamp + ".jpg", null);
+        encoder.encode(messageToEncode);
     }
 
     //https://stackoverflow.com/questions/10903754/input-text-dialog-android
-    public void buildEditTextPopUp() {
+    /*public void buildEditTextPopUp() {
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.messageToEnc);
@@ -140,5 +192,5 @@ public class EncodeActivity extends AppCompatActivity {
         });
 
         builder.show();
-    }
+    }*/
 }

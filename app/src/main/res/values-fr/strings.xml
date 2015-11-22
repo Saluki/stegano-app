@@ -7,7 +7,7 @@
     <string name="decode">Décoder</string>
     <string name="info">Informations</string>
     <string name="global_error_occurred">Une erreur est survenue</string>
-    <string name="title_activity_choose_pic">choosePic</string>
+    <string name="title_activity_choose_pic">Encoder un message</string>
     <string name="title_activity_show_gallery">ShowGallery</string>
     <string name="fromGallery">Choisir une image</string>
     <string name="lauchCamera">Prendre une photo</string>
