@@ -25,7 +25,7 @@
         </activity>
         <activity
             android:name=".domain.EncodeActivity"
-            android:label="@string/title_activity_choose_pic"
+            android:label="@string/title_activity_encode"
             android:theme="@style/AppTheme"
             android:parentActivityName=".domain.MainActivity" />
             <meta-data
@@ -33,8 +33,12 @@
                 android:value=".domain.MainActivity" />
         <activity
             android:name=".domain.DecodeActivity"
-            android:label="@string/title_activity_show_gallery"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:label="@string/title_activity_decode"
+            android:theme="@style/AppTheme"
+            android:parentActivityName=".domain.MainActivity" />
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".domain.MainActivity" />
         <activity
             android:name=".domain.SettingsActivity"
             android:label="@string/title_activity_settings"

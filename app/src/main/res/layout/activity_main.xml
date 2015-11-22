@@ -37,7 +37,7 @@
                 android:padding="40dp"
                 android:textStyle="bold"
                 android:gravity="center_vertical"
-                android:layout_marginRight="5dp" />
+                android:layout_marginRight="5dp"/>
 
             <Button
                 android:layout_width="wrap_content"
@@ -65,4 +65,5 @@
         android:layout_gravity="center_horizontal"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
+
 </RelativeLayout>
