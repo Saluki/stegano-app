@@ -29,5 +29,8 @@
     <string name="choosepic_result_failed">Failed to retrieve picture</string>
     <string name="error_creating_file">Error creating file</string>
     <string name="decode_decoding_error">Could not decode text in the picture</string>
+    <string name="settings_title">choose backround color</string>
+    <string name="Choose_blue_value">choose blue value</string>
+    <string name="choose_red_value">choose red value</string>
 
 </resources>
