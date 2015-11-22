@@ -13,9 +13,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,9 +38,15 @@ public class EncodeActivity extends AppCompatActivity {
 
     private static final int PICK_IMAGE = 1;
     private static final int TAKE_PICTURE = 2;
+    private static final int LSB_STRENGTH_PROGRESS = 75;
+    private static final int EXIF_STRENGTH_PROGRESS = 25;
 
     protected EditText messageMultipleInput;
     protected TextView countMessageLabel;
+    protected ProgressBar algorithmStrengthBar;
+    protected TextView algorithmStrengthText;
+    protected RadioButton lsbRadioButton;
+    protected RadioButton exifRadioButton;
 
     String messageToEncode = "";
     Bitmap pictureChosen;
@@ -53,8 +62,35 @@ public class EncodeActivity extends AppCompatActivity {
 
         messageMultipleInput = (EditText) findViewById(R.id.messageMultipleInput);
         countMessageLabel = (TextView) findViewById(R.id.countMessageLabel);
+        algorithmStrengthBar = (ProgressBar) findViewById(R.id.algorithmStrengthBar);
+        algorithmStrengthText = (TextView) findViewById(R.id.algorithmStrengthText);
+        lsbRadioButton = (RadioButton) findViewById(R.id.LsbRadioButton);
+        exifRadioButton = (RadioButton) findViewById(R.id.ExifRadioButton);
 
-        TextWatcher inputWatcher = new TextWatcher() {
+        messageMultipleInput.addTextChangedListener(getInputLengthWatcher());
+
+        lsbRadioButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                algorithmStrengthBar.setProgress(LSB_STRENGTH_PROGRESS);
+                algorithmStrengthText.setText(getString(R.string.algorithm_strength_strong));
+            }
+        });
+
+        exifRadioButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                algorithmStrengthBar.setProgress(EXIF_STRENGTH_PROGRESS);
+                algorithmStrengthText.setText(getString(R.string.algorithm_strength_weak));
+            }
+        });
+    }
+
+    protected TextWatcher getInputLengthWatcher() {
+
+        return new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
@@ -72,7 +108,6 @@ public class EncodeActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {}
         };
-        messageMultipleInput.addTextChangedListener(inputWatcher);
     }
 
     public void launchCamera(View view) {
@@ -136,10 +171,15 @@ public class EncodeActivity extends AppCompatActivity {
         }
         catch(SteganoEncodeException e) {
 
-            // TODO Error feedback
-            Log.e("EncodeActivity", "Could not encode message: "+e.getMessage(), e);
+            Toast errorToast = Toast.makeText(getBaseContext(), "Could not encode message:\n"+e.getMessage(), Toast.LENGTH_LONG);
+            errorToast.show();
+
+            Log.e("EncodeActivity", "Could not encode message: " + e.getMessage(), e);
             return;
         }
+
+        Toast successToast = Toast.makeText(getBaseContext(), "Message successfully encoded", Toast.LENGTH_LONG);
+        successToast.show();
 
         Intent mainIntent = new Intent(this, ovh.gorillahack.steganoapp.domain.MainActivity.class);
         startActivity(mainIntent);
@@ -154,43 +194,4 @@ public class EncodeActivity extends AppCompatActivity {
         MediaStore.Images.Media.insertImage(getContentResolver(), pictureChosen, timeStamp + ".jpg", null);
         encoder.encode(messageToEncode);
     }
-
-    //https://stackoverflow.com/questions/10903754/input-text-dialog-android
-    /*public void buildEditTextPopUp() {
-
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.messageToEnc);
-
-        // Set up the input
-        final EditText input = new EditText(this);
-        builder.setView(input);
-
-        // Set up the buttons
-        builder.setPositiveButton(R.string.encode, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-                messageToEncode = input.getText().toString();
-                SteganoEncoder encoder = new SteganoEncoder(pictureChosen);
-                String timeStamp = Utils.getCurrentTimeStamp();
-                MediaStore.Images.Media.insertImage(getContentResolver(), pictureChosen, timeStamp + ".jpg", null);
-                Utils.buildTextViewPopUp(builder.getContext(), getString(R.string.info), getString(R.string.image_encrypt_succ));
-
-                try {
-                    encoder.encode(messageToEncode);
-                } catch (Exception e) {
-                    Utils.buildTextViewPopUp(builder.getContext(), getString(R.string.global_error_occurred), getString(R.string.error) + e.getMessage());
-                }
-            }
-        });
-
-        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-
-        builder.show();
-    }*/
 }

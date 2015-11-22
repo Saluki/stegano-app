@@ -20,6 +20,10 @@
             android:text="@string/message"
             android:id="@+id/textView3" />
 
+        <Space
+            android:layout_width="fill_parent"
+            android:layout_height="10dp" />
+
         <EditText
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -38,8 +42,8 @@
             android:layout_gravity="end" />
 
         <Space
-            android:layout_width="20dp"
-            android:layout_height="20dp" />
+            android:layout_width="fill_parent"
+            android:layout_height="10dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -48,8 +52,8 @@
             android:id="@+id/textView4" />
 
         <Space
-            android:layout_width="20dp"
-            android:layout_height="20dp" />
+            android:layout_width="fill_parent"
+            android:layout_height="10dp" />
 
         <RadioGroup
             android:layout_width="match_parent"
@@ -59,16 +63,47 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/lsb_description"
-                android:id="@+id/radioButton"
+                android:id="@+id/LsbRadioButton"
                 android:checked="true" />
 
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/exif_description"
-                android:id="@+id/radioButton2"
+                android:id="@+id/ExifRadioButton"
                 android:checked="false" />
+
         </RadioGroup>
+
+        <Space
+            android:layout_width="fill_parent"
+            android:layout_height="10dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/strength"
+            android:id="@+id/textView5" />
+
+        <Space
+            android:layout_width="fill_parent"
+            android:layout_height="10dp" />
+
+        <ProgressBar
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:progress="75"
+            android:indeterminate="false"
+            android:id="@+id/algorithmStrengthBar" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/algorithm_strength_strong"
+            android:id="@+id/algorithmStrengthText"
+            android:layout_gravity="end" />
 
         <LinearLayout
             android:orientation="horizontal"

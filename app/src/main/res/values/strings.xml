@@ -18,6 +18,9 @@
     <string name="algorithm">Algorithm</string>
     <string name="lsb_description">Least Significant Bit</string>
     <string name="exif_description">EXIF Metadata</string>
+    <string name="strength">Strength</string>
+    <string name="algorithm_strength_strong">Strong, not easily detected</string>
+    <string name="algorithm_strength_weak">Weak, can be quickly detected</string>
     <string name="cancel">Cancel</string>
     <string name="image_encrypt_succ">Image encoded successfully \n It is now in you gallery</string>
     <string name="error">The application has encountered an error</string>

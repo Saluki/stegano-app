@@ -20,7 +20,7 @@ public class SteganoEncoder {
     public Bitmap encode(String text) throws SteganoEncodeException {
 
         if (text == null || text.isEmpty()) {
-            throw new NullPointerException("Text to encode cannot be null or empty");
+            throw new SteganoEncodeException("Message cannot be empty");
         }
 
         int[] binarySequence = SteganoUtils.getBinarySequence(text);

@@ -10,6 +10,7 @@ import ovh.gorillahack.steganoapp.utils.SteganoUtils;
 
 public class SteganoDecoder {
 
+    @Deprecated
     private static final int DECODE_LIMIT_DEV = SteganoUtils.UTF8_SIZE*10;
 
     private Bitmap pictureBitmap;
