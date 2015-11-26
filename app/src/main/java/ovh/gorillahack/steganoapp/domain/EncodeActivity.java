@@ -21,7 +21,6 @@ import android.widget.Toast;
 import java.io.IOException;
 
 import ovh.gorillahack.steganoapp.R;
-import ovh.gorillahack.steganoapp.algorithm.DecoderInterface;
 import ovh.gorillahack.steganoapp.algorithm.EncoderInterface;
 import ovh.gorillahack.steganoapp.algorithm.ExifEncoder;
 import ovh.gorillahack.steganoapp.algorithm.SteganoEncoder;
@@ -46,6 +45,9 @@ public class EncodeActivity extends AppCompatActivity {
 
     String messageToEncode = "";
     Bitmap pictureChosen;
+    int easterEgg = 0;
+    int checkBoxSwitch = 0;
+    int alpha = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +70,14 @@ public class EncodeActivity extends AppCompatActivity {
         lsbRadioButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if (checkBoxSwitch == 1) {
+                    easterEgg++;
+                    checkBoxSwitch = 0;
+                    if (easterEgg == 4)
+                        layout.setBackgroundResource(R.drawable.grumpycat);
+                    if (easterEgg > 3)
+                        layout.getBackground().setAlpha(easterEgg * 10);
+                }
                 algorithmStrengthBar.setProgress(LSB_STRENGTH_PROGRESS);
                 algorithmStrengthText.setText(getString(R.string.algorithm_strength_strong));
             }
@@ -77,7 +86,9 @@ public class EncodeActivity extends AppCompatActivity {
         exifRadioButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if (checkBoxSwitch == 0) {
+                    checkBoxSwitch = 1;
+                }
                 algorithmStrengthBar.setProgress(EXIF_STRENGTH_PROGRESS);
                 algorithmStrengthText.setText(getString(R.string.algorithm_strength_weak));
             }
@@ -88,21 +99,23 @@ public class EncodeActivity extends AppCompatActivity {
 
         return new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
                 int messageLength = messageMultipleInput.length();
-                countMessageLabel.setText(messageLength+" / 1024");
+                countMessageLabel.setText(messageLength + " / 1024");
 
-                if( messageLength>1024 ) {
+                if (messageLength > 1024) {
                     messageMultipleInput.setTextColor(Color.RED);
                 }
             }
 
             @Override
-            public void afterTextChanged(Editable s) {}
+            public void afterTextChanged(Editable s) {
+            }
         };
     }
 
@@ -164,10 +177,9 @@ public class EncodeActivity extends AppCompatActivity {
 
         try {
             encodeMessageInBitmap();
-        }
-        catch(SteganoEncodeException e) {
+        } catch (SteganoEncodeException e) {
 
-            Toast errorToast = Toast.makeText(getBaseContext(), "Could not encode message:\n"+e.getMessage(), Toast.LENGTH_LONG);
+            Toast errorToast = Toast.makeText(getBaseContext(), "Could not encode message:\n" + e.getMessage(), Toast.LENGTH_LONG);
             errorToast.show();
 
             Log.e("EncodeActivity", "Could not encode message: " + e.getMessage(), e);
@@ -186,13 +198,11 @@ public class EncodeActivity extends AppCompatActivity {
         messageToEncode = messageMultipleInput.getText().toString();
         EncoderInterface encoder = null;
 
-        if( lsbRadioButton.getText().length()>0 ) {
+        if (lsbRadioButton.getText().length() > 0) {
             encoder = new SteganoEncoder(pictureChosen);
-        }
-        else if( exifRadioButton.getText().length()>0 ) {
+        } else if (exifRadioButton.getText().length() > 0) {
             encoder = new ExifEncoder();
-        }
-        else {
+        } else {
             throw new SteganoEncodeException("No algorithm has been selected");
         }
 
@@ -201,4 +211,6 @@ public class EncodeActivity extends AppCompatActivity {
 
         encoder.encode(messageToEncode);
     }
+
+
 }
