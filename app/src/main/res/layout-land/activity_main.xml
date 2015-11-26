@@ -63,6 +63,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_below="@+id/decodeBT"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            android:layout_alignParentStart="true"
+            android:textStyle="bold" />
     </RelativeLayout>
 </RelativeLayout>
