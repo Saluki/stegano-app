@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import ovh.gorillahack.steganoapp.exceptions.SteganoDecodeException;
 import ovh.gorillahack.steganoapp.utils.SteganoUtils;
 
-public class SteganoDecoder {
+public class SteganoDecoder implements DecoderInterface {
 
     @Deprecated
     private static final int DECODE_LIMIT_DEV = SteganoUtils.UTF8_SIZE*10;

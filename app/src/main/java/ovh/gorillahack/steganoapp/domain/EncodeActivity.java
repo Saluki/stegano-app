@@ -21,6 +21,9 @@ import android.widget.Toast;
 import java.io.IOException;
 
 import ovh.gorillahack.steganoapp.R;
+import ovh.gorillahack.steganoapp.algorithm.DecoderInterface;
+import ovh.gorillahack.steganoapp.algorithm.EncoderInterface;
+import ovh.gorillahack.steganoapp.algorithm.ExifEncoder;
 import ovh.gorillahack.steganoapp.algorithm.SteganoEncoder;
 import ovh.gorillahack.steganoapp.exceptions.SteganoEncodeException;
 import ovh.gorillahack.steganoapp.utils.Utils;
@@ -181,10 +184,21 @@ public class EncodeActivity extends AppCompatActivity {
     protected void encodeMessageInBitmap() throws SteganoEncodeException {
 
         messageToEncode = messageMultipleInput.getText().toString();
-        SteganoEncoder encoder = new SteganoEncoder(pictureChosen);
-        String timeStamp = Utils.getCurrentTimeStamp();
+        EncoderInterface encoder = null;
 
+        if( lsbRadioButton.getText().length()>0 ) {
+            encoder = new SteganoEncoder(pictureChosen);
+        }
+        else if( exifRadioButton.getText().length()>0 ) {
+            encoder = new ExifEncoder();
+        }
+        else {
+            throw new SteganoEncodeException("No algorithm has been selected");
+        }
+
+        String timeStamp = Utils.getCurrentTimeStamp();
         MediaStore.Images.Media.insertImage(getContentResolver(), pictureChosen, timeStamp + ".jpg", null);
+
         encoder.encode(messageToEncode);
     }
 }
