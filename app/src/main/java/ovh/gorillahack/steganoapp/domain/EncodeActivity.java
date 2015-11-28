@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -18,13 +19,17 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 import ovh.gorillahack.steganoapp.R;
 import ovh.gorillahack.steganoapp.algorithm.EncoderInterface;
 import ovh.gorillahack.steganoapp.algorithm.ExifEncoder;
 import ovh.gorillahack.steganoapp.algorithm.SteganoEncoder;
+import ovh.gorillahack.steganoapp.exceptions.SteganoDecodeException;
 import ovh.gorillahack.steganoapp.exceptions.SteganoEncodeException;
+import ovh.gorillahack.steganoapp.utils.SteganoUtils;
 import ovh.gorillahack.steganoapp.utils.Utils;
 
 public class EncodeActivity extends AppCompatActivity {
@@ -199,18 +204,42 @@ public class EncodeActivity extends AppCompatActivity {
         EncoderInterface encoder = null;
 
         if (lsbRadioButton.getText().length() > 0) {
+
             encoder = new SteganoEncoder(pictureChosen);
-        } else if (exifRadioButton.getText().length() > 0) {
-            encoder = new ExifEncoder();
-        } else {
+            Bitmap encodedBitmap = (Bitmap) encoder.encode(messageToEncode);
+
+            SteganoUtils.debugCrasher(encodedBitmap);
+
+            String imageName = "STEGANO_" + Utils.getCurrentTimeStamp() + ".png";
+
+            FileOutputStream out = null;
+            File imageFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), imageName);
+
+            try {
+                out = new FileOutputStream(imageFile);
+                encodedBitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+            } catch (Exception e) {
+                throw new SteganoEncodeException(e.getMessage());
+            } finally {
+                try {
+                    if (out != null) {
+                        out.close();
+                    }
+                } catch (IOException e) {
+                    throw new SteganoEncodeException(e.getMessage());
+                }
+            }
+
+        }
+        else if (exifRadioButton.getText().length() > 0) {
+
+            (new ExifEncoder()).encode(messageToEncode); // TODO
+
+        }
+        else {
             throw new SteganoEncodeException("No algorithm has been selected");
         }
 
-        String timeStamp = Utils.getCurrentTimeStamp();
-        MediaStore.Images.Media.insertImage(getContentResolver(), pictureChosen, timeStamp + ".jpg", null);
-
-        encoder.encode(messageToEncode);
     }
-
 
 }

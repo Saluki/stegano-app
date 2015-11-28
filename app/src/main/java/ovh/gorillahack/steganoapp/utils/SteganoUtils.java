@@ -1,7 +1,15 @@
 package ovh.gorillahack.steganoapp.utils;
 
+import android.content.ContentResolver;
+import android.content.ContentUris;
+import android.content.ContentValues;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.net.Uri;
+import android.provider.MediaStore;
+import android.util.Log;
 
+import java.io.OutputStream;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 
@@ -11,7 +19,7 @@ import ovh.gorillahack.steganoapp.exceptions.SteganoEncodeException;
 public class SteganoUtils {
 
     public static final int UTF8_SIZE = 8;
-    public static final int MARGIN_SIZE = 91;
+    public static final int MARGIN_SIZE = 15;
 
     public static int[] getBinarySequence(String text) {
 
@@ -47,7 +55,7 @@ public class SteganoUtils {
         }
 
         int[] binaryMargin = new int[MARGIN_SIZE];
-        char[] stringMargin = Integer.toBinaryString(textLength).toCharArray();
+        char[] stringMargin = Integer.toBinaryString(textLength*UTF8_SIZE).toCharArray();
 
         int binaryPtr = binaryMargin.length-1;
         for(int stringPtr=stringMargin.length-1; stringPtr>=0; stringPtr--) {
@@ -89,6 +97,16 @@ public class SteganoUtils {
         return textBuilder.toString();
     }
 
+    public static int getIntegerBinaryList(ArrayList<Integer> binaryList) throws SteganoDecodeException {
+
+        StringBuilder binaryString = new StringBuilder();
+        for(Integer currentBit : binaryList) {
+            binaryString.append(currentBit);
+        }
+
+        return Integer.parseInt(binaryString.toString(), 2);
+    }
+
     public static void checkBitmap(Bitmap pictureBitmap) {
 
         if (pictureBitmap == null) {
@@ -98,6 +116,31 @@ public class SteganoUtils {
         if (pictureBitmap.getWidth() == 0 || pictureBitmap.getHeight() == 0) {
             throw new InvalidParameterException("Picture must have a valid size");
         }
+    }
+
+    public static void debugCrasher(Bitmap b) {
+
+        ArrayList<Integer> blueColors = new ArrayList<>();
+
+        int CRASHER = 45;
+        for (int y1 = 0; y1 < b.getHeight(); y1++) {
+            for (int x1 = 0; x1 < b.getWidth(); x1++) {
+
+                int blueColor = Color.blue(b.getPixel(x1, y1));
+                blueColors.add(blueColor);
+
+                if( CRASHER==0 ) {
+                    break;
+                }
+                CRASHER--;
+            }
+            if( CRASHER==0 ) {
+                break;
+            }
+        }
+
+        // Point debugger here.
+        blueColors.size();
     }
 
 }

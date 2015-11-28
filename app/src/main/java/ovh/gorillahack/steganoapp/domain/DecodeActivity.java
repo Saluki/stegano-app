@@ -4,16 +4,19 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import java.io.File;
 import java.io.IOException;
 
 import ovh.gorillahack.steganoapp.R;
 import ovh.gorillahack.steganoapp.algorithm.SteganoDecoder;
+import ovh.gorillahack.steganoapp.utils.SteganoUtils;
 import ovh.gorillahack.steganoapp.utils.Utils;
 
 public class DecodeActivity extends AppCompatActivity {
@@ -37,6 +40,8 @@ public class DecodeActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        Log.d("RS", "RESULTCODE:" + resultCode);
+
         if (resultCode == RESULT_OK && data != null && data.getData() != null) {
             Uri uri = data.getData();
             try {
@@ -51,6 +56,10 @@ public class DecodeActivity extends AppCompatActivity {
         }
 
         try {
+
+            // TODO Debug
+            SteganoUtils.debugCrasher(this.picChosen);
+
             String message = (new SteganoDecoder(this.picChosen)).decode();
             String text = getString(R.string.this_is_the_mess) + message;
             Utils.buildTextViewPopUp(this, getString(R.string.info), text);
@@ -63,13 +72,18 @@ public class DecodeActivity extends AppCompatActivity {
 
     public void showGallery(View view) {
 
-        Intent pickIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("image/*");
+        startActivityForResult(intent, PICK_IMAGE);
+
+        /*Intent pickIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         pickIntent.setType(Utils.INTENT_IMAGE_TYPE);
 
         Intent chooserIntent = Intent.createChooser(getIntent(), "Select Image");
         chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[]{pickIntent});
 
-        startActivityForResult(chooserIntent, PICK_IMAGE);
+        startActivityForResult(chooserIntent, PICK_IMAGE);*/
     }
+
 }
 

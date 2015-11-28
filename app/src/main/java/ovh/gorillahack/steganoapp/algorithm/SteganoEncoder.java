@@ -7,7 +7,7 @@ import ovh.gorillahack.steganoapp.exceptions.SteganoEncodeException;
 import ovh.gorillahack.steganoapp.utils.SteganoUtils;
 import ovh.gorillahack.steganoapp.utils.Utils;
 
-public class SteganoEncoder implements EncoderInterface {
+public class SteganoEncoder implements EncoderInterface<Bitmap> {
 
     protected Bitmap pictureBitmap;
 
