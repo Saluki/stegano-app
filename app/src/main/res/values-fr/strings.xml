@@ -24,11 +24,11 @@
     <string name="choosepic_result_failed">Echec lors de la récuperation de l\'image</string>
     <string name="error_creating_file">Erreur lors de la création du fichier</string>
     <string name="decode_decoding_error">Impossible de décoder le texte</string>
-    <string name="Choose_blue_value">Choisit la valeur pour le bleu</string>
+    <string name="Choose_blue_value">Choisit la valeur de bleu</string>
     <string name="algorithm">Algorithme</string>
     <string name="algorithm_strength_strong">Robuste, ne peut pas etre detecté facilement</string>
     <string name="algorithm_strength_weak">Faible, peut etre detecté facilement</string>
-    <string name="choose_red_value">Choisit la valeur pour le rouge</string>
+    <string name="choose_red_value">Choisi la valeur de rouge</string>
     <string name="exif_description">Metadonnes EXIF</string>
     <string name="lsb_description">Le bit le moins significatif</string>
     <string name="message">Message</string>
@@ -36,5 +36,12 @@
     <string name="strength">Force</string>
     <string name="title_activity_settings">Parametres</string>
     <string name="write_message">Ecris un message</string>
+    <string name="choose_blue_value">Choisir une valeur de bleu</string>
+    <string name="choose_green_value">Choisir une valeur de vert</string>
+    <string name="no_image_retreived">Aucune image n\'a été recue</string>
+    <string name="title_activity_decode">Décoder un message</string>
+    <string name="title_activity_encode">Encoder un message</string>
+    <string name="set_to_white">Mettre a blanc</string>
+    <string name="reset_to_previous_color">Couleur précédente</string>
 
 </resources>
