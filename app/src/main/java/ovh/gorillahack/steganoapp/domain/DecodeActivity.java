@@ -37,8 +37,6 @@ public class DecodeActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        Log.d("RS", "RESULTCODE:" + resultCode);
-
         if (resultCode == RESULT_OK && data != null && data.getData() != null) {
             Uri uri = data.getData();
             try {

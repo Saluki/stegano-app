@@ -141,12 +141,16 @@ public class EncodeActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        // Handle bad retrieval of picture
         if (resultCode != RESULT_OK) {
             Toast.makeText(getApplicationContext(), R.string.choosepic_result_failed, Toast.LENGTH_LONG).show();
             Log.e("Activity result error:", "result code: " + resultCode + " request code:" + requestCode);
             return;
         }
+
+        // Extract picture bitmap based on source
         if (requestCode == PICK_IMAGE) {
+
             if (data == null || data.getData() == null) {
                 Utils.buildTextViewPopUp(this, getString(R.string.global_error_occurred), getString(R.string.error));
                 Log.e("ChoosePicActivity", "Data format was null");
@@ -160,27 +164,35 @@ public class EncodeActivity extends AppCompatActivity {
                 Log.e("ChoosePicActivity", "Could not retrieve media: " + e.getMessage());
                 return;
             }
+
         } else if (requestCode == TAKE_PICTURE) {
+
             Bundle extras = data.getExtras();
             pictureChosen = (Bitmap) extras.get("data");
+
         } else {
+
             Utils.buildTextViewPopUp(this, getString(R.string.global_error_occurred), getString(R.string.error));
             Log.e("ChoosePicActivity", "Bad request code given: " + requestCode);
             return;
         }
+
+        // Encode the message
         try {
             encodeMessageInBitmap();
-        } catch (SteganoEncodeException e) {
+        }
+        catch (SteganoEncodeException e) {
             Toast errorToast = Toast.makeText(getBaseContext(), "Could not encode message:\n" + e.getMessage(), Toast.LENGTH_LONG);
             errorToast.show();
             Log.e("EncodeActivity", "Could not encode message: " + e.getMessage(), e);
             return;
         }
-        Toast successToast = Toast.makeText(getBaseContext(), "Message successfully encoded", Toast.LENGTH_LONG);
-        successToast.show();
 
-        Intent mainIntent = new Intent(this, ovh.gorillahack.steganoapp.domain.MainActivity.class);
-        startActivity(mainIntent);
+        // Reset form elements
+        this.messageToEncodeET.setText("");
+
+        // Displays a feedback for the user
+        Utils.buildTextViewPopUp(this, getString(R.string.encoding_success_title), getString(R.string.encoding_success_body));
     }
 
     protected void encodeMessageInBitmap() throws SteganoEncodeException {
