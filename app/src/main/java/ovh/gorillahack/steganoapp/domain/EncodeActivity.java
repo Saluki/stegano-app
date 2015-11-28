@@ -28,7 +28,6 @@ import ovh.gorillahack.steganoapp.algorithm.EncoderInterface;
 import ovh.gorillahack.steganoapp.algorithm.ExifEncoder;
 import ovh.gorillahack.steganoapp.algorithm.SteganoEncoder;
 import ovh.gorillahack.steganoapp.exceptions.SteganoEncodeException;
-import ovh.gorillahack.steganoapp.utils.SteganoUtils;
 import ovh.gorillahack.steganoapp.utils.Utils;
 
 public class EncodeActivity extends AppCompatActivity {
@@ -40,7 +39,7 @@ public class EncodeActivity extends AppCompatActivity {
     private static final int LSB_STRENGTH_PROGRESS = 75;
     private static final int EXIF_STRENGTH_PROGRESS = 25;
 
-    protected EditText messageMultipleInput;
+    protected EditText messageToEncodeET;
     protected TextView countMessageLabel;
     protected ProgressBar algorithmStrengthBar;
     protected TextView algorithmStrengthText;
@@ -61,14 +60,14 @@ public class EncodeActivity extends AppCompatActivity {
 
         Utils.changeBackgroundColor(getSharedPreferences(Utils.PREFS_NAME, 0), layout);
 
-        messageMultipleInput = (EditText) findViewById(R.id.messageMultipleInput);
+        messageToEncodeET = (EditText) findViewById(R.id.messageMultipleInput);
         countMessageLabel = (TextView) findViewById(R.id.countMessageLabel);
         algorithmStrengthBar = (ProgressBar) findViewById(R.id.algorithmStrengthBar);
         algorithmStrengthText = (TextView) findViewById(R.id.algorithmStrengthText);
         lsbRadioButton = (RadioButton) findViewById(R.id.LsbRadioButton);
         exifRadioButton = (RadioButton) findViewById(R.id.ExifRadioButton);
 
-        messageMultipleInput.addTextChangedListener(getInputLengthWatcher());
+        messageToEncodeET.addTextChangedListener(getInputLengthWatcher());
 
         lsbRadioButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,10 +75,10 @@ public class EncodeActivity extends AppCompatActivity {
                 if (checkBoxSwitch == 1) {
                     easterEgg++;
                     checkBoxSwitch = 0;
-                    if (easterEgg == 4)
+                    if (easterEgg == 4) //if user switched algo 4 times
                         layout.setBackgroundResource(R.drawable.grumpycat);
                     if (easterEgg > 3)
-                        layout.getBackground().setAlpha(easterEgg * 10);
+                        layout.getBackground().setAlpha(easterEgg * 10); //everytime he switches add alpha to new backround
                 }
                 algorithmStrengthBar.setProgress(LSB_STRENGTH_PROGRESS);
                 algorithmStrengthText.setText(getString(R.string.algorithm_strength_strong));
@@ -108,11 +107,11 @@ public class EncodeActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-                int messageLength = messageMultipleInput.length();
+                int messageLength = messageToEncodeET.length();
                 countMessageLabel.setText(messageLength + " / 1024");
 
                 if (messageLength > 1024) {
-                    messageMultipleInput.setTextColor(Color.RED);
+                    messageToEncodeET.setTextColor(Color.RED);
                 }
             }
 
@@ -123,14 +122,12 @@ public class EncodeActivity extends AppCompatActivity {
     }
 
     public void launchCamera(View view) {
-
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, MediaStore.Images.Media.EXTERNAL_CONTENT_URI.getPath());
         startActivityForResult(intent, TAKE_PICTURE);
     }
 
     public void showGallery(View view) {
-
         Intent pickIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         pickIntent.setType(Utils.INTENT_IMAGE_TYPE);
 
@@ -149,46 +146,36 @@ public class EncodeActivity extends AppCompatActivity {
             Log.e("Activity result error:", "result code: " + resultCode + " request code:" + requestCode);
             return;
         }
-
         if (requestCode == PICK_IMAGE) {
-
             if (data == null || data.getData() == null) {
                 Utils.buildTextViewPopUp(this, getString(R.string.global_error_occurred), getString(R.string.error));
                 Log.e("ChoosePicActivity", "Data format was null");
                 return;
             }
-
             Uri uri = data.getData();
             try {
-                this.pictureChosen = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                pictureChosen = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
             } catch (IOException e) {
                 Toast.makeText(getApplicationContext(), R.string.error, Toast.LENGTH_LONG).show();
                 Log.e("ChoosePicActivity", "Could not retrieve media: " + e.getMessage());
                 return;
             }
-
         } else if (requestCode == TAKE_PICTURE) {
-
             Bundle extras = data.getExtras();
             pictureChosen = (Bitmap) extras.get("data");
-
         } else {
             Utils.buildTextViewPopUp(this, getString(R.string.global_error_occurred), getString(R.string.error));
             Log.e("ChoosePicActivity", "Bad request code given: " + requestCode);
             return;
         }
-
         try {
             encodeMessageInBitmap();
         } catch (SteganoEncodeException e) {
-
             Toast errorToast = Toast.makeText(getBaseContext(), "Could not encode message:\n" + e.getMessage(), Toast.LENGTH_LONG);
             errorToast.show();
-
             Log.e("EncodeActivity", "Could not encode message: " + e.getMessage(), e);
             return;
         }
-
         Toast successToast = Toast.makeText(getBaseContext(), "Message successfully encoded", Toast.LENGTH_LONG);
         successToast.show();
 
@@ -198,11 +185,10 @@ public class EncodeActivity extends AppCompatActivity {
 
     protected void encodeMessageInBitmap() throws SteganoEncodeException {
 
-        messageToEncode = messageMultipleInput.getText().toString();
+        messageToEncode = messageToEncodeET.getText().toString(); //get message from Edit Text
         EncoderInterface encoder;
 
         if (lsbRadioButton.getText().length() > 0) {
-
             encoder = new SteganoEncoder(pictureChosen);
             Bitmap encodedBitmap = (Bitmap) encoder.encode(messageToEncode);
 
@@ -210,7 +196,6 @@ public class EncodeActivity extends AppCompatActivity {
 
             FileOutputStream out = null;
             File imageFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), imageName);
-
             try {
                 out = new FileOutputStream(imageFile);
                 encodedBitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
@@ -222,22 +207,14 @@ public class EncodeActivity extends AppCompatActivity {
                         out.close();
                     }
                 } catch (IOException e) {
-                    // TODO
                     e.printStackTrace();
                 }
             }
-
-        }
-        else if (exifRadioButton.getText().length() > 0) {
-
-            // TODO
+        } else if (exifRadioButton.getText().length() > 0) {
+            //TODO
             (new ExifEncoder()).encode(messageToEncode);
-
-        }
-        else {
+        } else {
             throw new SteganoEncodeException("No algorithm has been selected");
         }
-
     }
-
 }

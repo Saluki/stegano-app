@@ -10,7 +10,7 @@
     <string name="title_activity_decode">Decode message</string>
     <string name="fromGallery">Choose From Gallery</string>
     <string name="lauchCamera">Take Picture</string>
-    <string name="informations">This application allows you to hide a text message in a picture using the LSB watermarking algorithm</string>
+    <string name="informations">This application allows you to hide a text message in a picture using a watermarking algorithm of your choice.</string>
     <string name="messageToEnc">Message to encode:</string>
     <string name="message">Message</string>
     <string name="write_message">Write a message...</string>
@@ -37,5 +37,6 @@
     <string name="choose_green_value">Choose green value</string>
     <string name="reset_to_previous_color">Previous color</string>
     <string name="set_to_white">Set to white</string>
+    <string name="no_image_retreived">No image has been received</string>
 
 </resources>

@@ -44,16 +44,14 @@ public class DecodeActivity extends AppCompatActivity {
             try {
                 picChosen = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
             } catch (IOException e) {
+                Utils.buildTextViewPopUp(this, getString(R.string.global_error_occurred), getString(R.string.no_image_retreived));
                 e.printStackTrace();
             }
-
         } else {
-            Utils.buildTextViewPopUp(this, getString(R.string.global_error_occurred), getString(R.string.error));
+            Utils.buildTextViewPopUp(this, getString(R.string.global_error_occurred), getString(R.string.no_image_retreived));
             return;
         }
-
         try {
-
             String message = (new SteganoDecoder(this.picChosen)).decode();
             String text = getString(R.string.this_is_the_mess) + message;
             Utils.buildTextViewPopUp(this, getString(R.string.info), text);
@@ -65,7 +63,6 @@ public class DecodeActivity extends AppCompatActivity {
     }
 
     public void showGallery(View view) {
-
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("image/*");
         startActivityForResult(intent, PICK_IMAGE);
