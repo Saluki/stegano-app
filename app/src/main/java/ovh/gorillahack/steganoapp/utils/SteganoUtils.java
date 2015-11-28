@@ -91,7 +91,9 @@ public class SteganoUtils {
                 charBuilder = new StringBuilder();
                 charPtr = 0;
             }
-            charPtr++;
+            else {
+                charPtr++;
+            }
         }
 
         return textBuilder.toString();
