@@ -1,26 +1,35 @@
 package ovh.gorillahack.steganoapp.utils;
 
-import android.content.ContentResolver;
-import android.content.ContentUris;
-import android.content.ContentValues;
 import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.net.Uri;
-import android.provider.MediaStore;
-import android.util.Log;
 
-import java.io.OutputStream;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 
 import ovh.gorillahack.steganoapp.exceptions.SteganoDecodeException;
 import ovh.gorillahack.steganoapp.exceptions.SteganoEncodeException;
 
+/**
+ * Various utilities that simplify the steganography processes
+ */
 public class SteganoUtils {
 
+    /**
+     * Size of a UTF-8 character in bits.
+     */
     public static final int UTF8_SIZE = 8;
+
+    /**
+     * The size of the margin in a bitmap.
+     * The margin bits are the first N pixels that are used to store the binary length of the text.
+     */
     public static final int MARGIN_SIZE = 15;
 
+    /**
+     * Converts a string to his binary equivalent.
+     *
+     * @param text The string that must be converted, cannot be null
+     * @return An array of integers representing the binary equivalent
+     */
     public static int[] getBinarySequence(String text) {
 
         if( text==null ) {
@@ -44,6 +53,13 @@ public class SteganoUtils {
         return bitList;
     }
 
+    /**
+     * Returns the margin array which represents the text length (in bits).
+     *
+     * @param textLength The length of a given text (the number of characters)
+     * @return An array representing the margin as a suite of bits
+     * @throws SteganoEncodeException If the given text length is negative or exceeds 1024
+     */
     public static int[] getMarginSequence(int textLength) throws SteganoEncodeException {
 
         if( textLength<0 ) {
@@ -67,6 +83,13 @@ public class SteganoUtils {
         return binaryMargin;
     }
 
+    /**
+     * Reconverts an array of bits (represented as integers) to a readable UTF-8 string
+     *
+     * @param binaryList An array containing a suite of integers, which represents the bits of a string
+     * @return The readable UTF-8 string
+     * @throws SteganoDecodeException If the array of bits isn't a multiple of an UTF-8 character
+     */
     public static String getStringBinaryList(ArrayList<Integer> binaryList) throws SteganoDecodeException{
 
         int binaryListSize = binaryList.size();
@@ -99,7 +122,15 @@ public class SteganoUtils {
         return textBuilder.toString();
     }
 
-    public static int getIntegerBinaryList(ArrayList<Integer> binaryList) throws SteganoDecodeException {
+    /**
+     * Converts an array of bits (represented with integers) to an integer.
+     *
+     * This method is mainly used to decode the margin of an encoded image.
+     *
+     * @param binaryList An array of integers which represents a number in binary format
+     * @return The converted integer
+     */
+    public static int getIntegerBinaryList(ArrayList<Integer> binaryList) {
 
         StringBuilder binaryString = new StringBuilder();
         for(Integer currentBit : binaryList) {
@@ -109,6 +140,11 @@ public class SteganoUtils {
         return Integer.parseInt(binaryString.toString(), 2);
     }
 
+    /**
+     * Performs some basic check-ups on a given bitmap picture.
+     *
+     * @param pictureBitmap The bitmap that must be checked
+     */
     public static void checkBitmap(Bitmap pictureBitmap) {
 
         if (pictureBitmap == null) {
@@ -119,30 +155,4 @@ public class SteganoUtils {
             throw new InvalidParameterException("Picture must have a valid size");
         }
     }
-
-    public static void debugCrasher(Bitmap b) {
-
-        ArrayList<Integer> blueColors = new ArrayList<>();
-
-        int CRASHER = 45;
-        for (int y1 = 0; y1 < b.getHeight(); y1++) {
-            for (int x1 = 0; x1 < b.getWidth(); x1++) {
-
-                int blueColor = Color.blue(b.getPixel(x1, y1));
-                blueColors.add(blueColor);
-
-                if( CRASHER==0 ) {
-                    break;
-                }
-                CRASHER--;
-            }
-            if( CRASHER==0 ) {
-                break;
-            }
-        }
-
-        // Point debugger here.
-        blueColors.size();
-    }
-
 }

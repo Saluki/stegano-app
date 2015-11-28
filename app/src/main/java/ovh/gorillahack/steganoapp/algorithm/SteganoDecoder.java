@@ -8,16 +8,33 @@ import java.util.ArrayList;
 import ovh.gorillahack.steganoapp.exceptions.SteganoDecodeException;
 import ovh.gorillahack.steganoapp.utils.SteganoUtils;
 
+/**
+ * A steganography decoder that used the LSB technique to decode text.
+ */
 public class SteganoDecoder implements DecoderInterface {
 
+    /**
+     * The bitmap that contains the hidden text.
+     */
     private Bitmap pictureBitmap;
 
+    /**
+     * Constructs a steganography decoder based on a given bitmap.
+     *
+     * @param pictureBitmap The bitmap that contains the hidden text
+     */
     public SteganoDecoder(Bitmap pictureBitmap) {
 
         SteganoUtils.checkBitmap(pictureBitmap);
         this.pictureBitmap = pictureBitmap;
     }
 
+    /**
+     * Decodes a string from the bitmap using the LSB technique with margin.
+     *
+     * @return The decoded, UTF-8 readable string
+     * @throws SteganoDecodeException If a steganography error occurred in the process
+     */
     public String decode() throws SteganoDecodeException {
 
         ArrayList<Integer> extractedBits = new ArrayList<>();

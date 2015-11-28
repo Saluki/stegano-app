@@ -1,7 +1,7 @@
 package ovh.gorillahack.steganoapp.exceptions;
 
 /**
- * Created by corentin on 12/11/15.
+ * Exception used by the steganography decoding process
  */
 public class SteganoDecodeException extends Exception {
 

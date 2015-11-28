@@ -27,7 +27,6 @@ import ovh.gorillahack.steganoapp.R;
 import ovh.gorillahack.steganoapp.algorithm.EncoderInterface;
 import ovh.gorillahack.steganoapp.algorithm.ExifEncoder;
 import ovh.gorillahack.steganoapp.algorithm.SteganoEncoder;
-import ovh.gorillahack.steganoapp.exceptions.SteganoDecodeException;
 import ovh.gorillahack.steganoapp.exceptions.SteganoEncodeException;
 import ovh.gorillahack.steganoapp.utils.SteganoUtils;
 import ovh.gorillahack.steganoapp.utils.Utils;
@@ -52,7 +51,6 @@ public class EncodeActivity extends AppCompatActivity {
     Bitmap pictureChosen;
     int easterEgg = 0;
     int checkBoxSwitch = 0;
-    int alpha = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -201,14 +199,12 @@ public class EncodeActivity extends AppCompatActivity {
     protected void encodeMessageInBitmap() throws SteganoEncodeException {
 
         messageToEncode = messageMultipleInput.getText().toString();
-        EncoderInterface encoder = null;
+        EncoderInterface encoder;
 
         if (lsbRadioButton.getText().length() > 0) {
 
             encoder = new SteganoEncoder(pictureChosen);
             Bitmap encodedBitmap = (Bitmap) encoder.encode(messageToEncode);
-
-            SteganoUtils.debugCrasher(encodedBitmap);
 
             String imageName = "STEGANO_" + Utils.getCurrentTimeStamp() + ".png";
 
@@ -226,14 +222,16 @@ public class EncodeActivity extends AppCompatActivity {
                         out.close();
                     }
                 } catch (IOException e) {
-                    throw new SteganoEncodeException(e.getMessage());
+                    // TODO
+                    e.printStackTrace();
                 }
             }
 
         }
         else if (exifRadioButton.getText().length() > 0) {
 
-            (new ExifEncoder()).encode(messageToEncode); // TODO
+            // TODO
+            (new ExifEncoder()).encode(messageToEncode);
 
         }
         else {

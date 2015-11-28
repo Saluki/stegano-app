@@ -5,18 +5,35 @@ import android.graphics.Color;
 
 import ovh.gorillahack.steganoapp.exceptions.SteganoEncodeException;
 import ovh.gorillahack.steganoapp.utils.SteganoUtils;
-import ovh.gorillahack.steganoapp.utils.Utils;
 
+/**
+ * A steganography encoder that uses the LSB technique on picture bitmaps.
+ */
 public class SteganoEncoder implements EncoderInterface<Bitmap> {
 
+    /**
+     * The bitmap that will be used to hide text.
+     */
     protected Bitmap pictureBitmap;
 
+    /**
+     * Constructs a steganography encoder based on copy from a given bitmap.
+     *
+     * @param immutableBitmap The bitmap that will be copied
+     */
     public SteganoEncoder(Bitmap immutableBitmap) {
 
         SteganoUtils.checkBitmap(immutableBitmap);
         this.pictureBitmap = immutableBitmap.copy(immutableBitmap.getConfig(), true);
     }
 
+    /**
+     * Encode and returns a given string encoded in the picture bitmap.
+     *
+     * @param text The string to encode in the bitmap
+     * @return The encoded bitmap that contains the text
+     * @throws SteganoEncodeException If a steganography error occurred in the process
+     */
     public Bitmap encode(String text) throws SteganoEncodeException {
 
         if (text == null || text.isEmpty()) {
@@ -54,6 +71,14 @@ public class SteganoEncoder implements EncoderInterface<Bitmap> {
         return this.pictureBitmap;
     }
 
+    /**
+     * Encode a bit from the given margin sequence using the LSB technique in a specif pixel.
+     *
+     * @param marginSequence The margin sequence to encode
+     * @param marginPtr The current margin pointer
+     * @param y The pixel 'Y' coordinate
+     * @param x The pixel 'X' coordinate
+     */
     private void encodeMargin(int[] marginSequence, int marginPtr, int y, int x) {
 
         int argbColor = this.pictureBitmap.getPixel(x, y);
@@ -71,6 +96,14 @@ public class SteganoEncoder implements EncoderInterface<Bitmap> {
         this.pictureBitmap.setPixel(x, y, newArgbColor);
     }
 
+    /**
+     * Encode a bit from a given binary sequence using the LSB technique in a specific pixel.
+     *
+     * @param binarySequence The binary sequence to encode
+     * @param binaryPtr The current binary data pointer
+     * @param y The pixel 'Y' coordinate
+     * @param x The pixel 'X' coordinate
+     */
     private void encodeData(int[] binarySequence, int binaryPtr, int y, int x) {
 
         // Extract Least Significant Byte from pixel (blue component)
