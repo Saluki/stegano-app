@@ -54,7 +54,7 @@ public class SteganoEncoder implements EncoderInterface<Bitmap> {
                     this.encodeMargin(marginSequence, marginPtr, y, x);
                     marginPtr++;
                 }
-                else if (binaryPtr >= binarySequence.length-1) {
+                else if (binaryPtr >= binarySequence.length) {
 
                     // Return the new bitmap when all data is encoded
                     return this.pictureBitmap;
