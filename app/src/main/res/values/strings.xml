@@ -41,5 +41,6 @@
     <string name="encoding_success_title">Encoding done</string>
     <string name="encoding_success_body">Successfully encoded your message.\nThe picture has been saved in the \"Pictures\" folder on the external storage.</string>
     <string name="no_algorithm_selected">No algorithm has been selected</string>
+    <string name="stegano_message_decoded">Message decoded</string>
 
 </resources>

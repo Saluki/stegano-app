@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import java.io.IOException;
 
@@ -51,11 +52,11 @@ public class DecodeActivity extends AppCompatActivity {
             try {
                 pictureChosen = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
             } catch (IOException e) {
-                Utils.buildTextViewPopUp(this, getString(R.string.global_error_occurred), getString(R.string.no_image_retreived));
-                e.printStackTrace();
+                Toast.makeText(getApplicationContext(), R.string.choosepic_result_failed, Toast.LENGTH_LONG).show();
+                return;
             }
         } else {
-            Utils.buildTextViewPopUp(this, getString(R.string.global_error_occurred), getString(R.string.no_image_retreived));
+            Toast.makeText(getApplicationContext(), R.string.choosepic_result_failed, Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -72,11 +73,9 @@ public class DecodeActivity extends AppCompatActivity {
 
         try {
             String message = decoder.decode();
-            String text = getString(R.string.this_is_the_mess) + message;
-            Utils.buildTextViewPopUp(this, getString(R.string.info), text);
+            Utils.buildTextViewPopUp(this, getString(R.string.stegano_message_decoded), message);
         }
         catch (Exception e) {
-            Log.e("DecodeActivity", "Could not decode text in image: "+e.getMessage(), e);
             Utils.buildTextViewPopUp(this, getString(R.string.global_error_occurred), getString(R.string.decode_decoding_error));
         }
     }
