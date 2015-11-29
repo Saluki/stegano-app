@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -19,6 +20,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
@@ -215,11 +217,13 @@ public class EncodeActivity extends AppCompatActivity {
 
         String imageName = "STEGANO_" + Utils.getCurrentTimeStamp() + ".png";
         FileOutputStream out = null;
-        try {
-            out = openFileOutput(imageName, Context.MODE_PRIVATE);
+        File imageFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM), imageName);
 
+        try {
+
+            out = new FileOutputStream(imageFile);
             encodedBitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
-            out.close();
+
         } catch (Exception e) {
             throw new SteganoEncodeException(e.getMessage());
         } finally {

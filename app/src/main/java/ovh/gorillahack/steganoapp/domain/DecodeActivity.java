@@ -80,13 +80,10 @@ public class DecodeActivity extends AppCompatActivity {
     }
 
     public void showGallery(View view) {
-        Intent pickIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        pickIntent.setType(Utils.INTENT_IMAGE_TYPE);
 
-        Intent chooserIntent = Intent.createChooser(getIntent(), "Select Image");
-        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[]{pickIntent});
-
-        startActivityForResult(chooserIntent, PICK_IMAGE);
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("image/*");
+        startActivityForResult(intent, PICK_IMAGE);
     }
 
 }
