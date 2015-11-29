@@ -44,7 +44,7 @@
     <string name="set_to_white">Fond blanc</string>
     <string name="reset_to_previous_color">Couleur précédente</string>
     <string name="encoding_success_title">Encodage terminé</string>
-    <string name="encoding_success_body">Message correctement encodé.\nL\'image se situe dans le dossier \"Images\" sur le storage externe</string>
+    <string name="encoding_success_body">Message correctement encodé.\nL\'image se situe dans la memoire interne du telephone</string>
     <string name="no_algorithm_selected">Aucun algorithme n\'a été sélectionné</string>
     <string name="stegano_message_decoded">Message décodé</string>
 

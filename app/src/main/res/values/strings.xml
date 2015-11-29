@@ -39,7 +39,7 @@
     <string name="set_to_white">Set to white</string>
     <string name="no_image_retreived">No image has been received</string>
     <string name="encoding_success_title">Encoding done</string>
-    <string name="encoding_success_body">Successfully encoded your message.\nThe picture has been saved in the \"Pictures\" folder on the external storage.</string>
+    <string name="encoding_success_body">Successfully encoded your message.\nThe picture has been saved in the internal storage.</string>
     <string name="no_algorithm_selected">No algorithm has been selected</string>
     <string name="stegano_message_decoded">Message decoded</string>
     <string name="Choose_blue_value">Choose blue value</string>
