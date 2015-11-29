@@ -34,14 +34,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/lsb_description"
-                android:id="@+id/radioButton"
+                android:id="@+id/lsbRadioButton"
                 android:checked="true" />
 
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/exif_description"
-                android:id="@+id/radioButton2"
+                android:id="@+id/armoredRadioButton"
                 android:checked="false" />
         </RadioGroup>
 

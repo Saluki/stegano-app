@@ -8,11 +8,14 @@ import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 
 import java.io.IOException;
 
 import ovh.gorillahack.steganoapp.R;
+import ovh.gorillahack.steganoapp.algorithm.ArmoredDecoder;
+import ovh.gorillahack.steganoapp.algorithm.DecoderInterface;
 import ovh.gorillahack.steganoapp.algorithm.SteganoDecoder;
 import ovh.gorillahack.steganoapp.utils.Utils;
 
@@ -21,7 +24,10 @@ public class DecodeActivity extends AppCompatActivity {
     private static final int PICK_IMAGE = 1;
 
     protected RelativeLayout layout;
-    protected Bitmap picChosen;
+    protected Bitmap pictureChosen;
+
+    protected RadioButton lsbRadioButton;
+    protected RadioButton armoredRadioButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +37,9 @@ public class DecodeActivity extends AppCompatActivity {
         layout = (RelativeLayout) findViewById(R.id.show_gallery_layout);
 
         Utils.changeBackgroundColor(getSharedPreferences(Utils.PREFS_NAME, 0), layout);
+
+        lsbRadioButton = (RadioButton) findViewById(R.id.lsbRadioButton);
+        armoredRadioButton = (RadioButton) findViewById(R.id.armoredRadioButton);
     }
 
     @Override
@@ -40,7 +49,7 @@ public class DecodeActivity extends AppCompatActivity {
         if (resultCode == RESULT_OK && data != null && data.getData() != null) {
             Uri uri = data.getData();
             try {
-                picChosen = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                pictureChosen = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
             } catch (IOException e) {
                 Utils.buildTextViewPopUp(this, getString(R.string.global_error_occurred), getString(R.string.no_image_retreived));
                 e.printStackTrace();
@@ -49,8 +58,20 @@ public class DecodeActivity extends AppCompatActivity {
             Utils.buildTextViewPopUp(this, getString(R.string.global_error_occurred), getString(R.string.no_image_retreived));
             return;
         }
+
+        DecoderInterface decoder;
+
+        if (lsbRadioButton.isChecked()) {
+            decoder = new SteganoDecoder(pictureChosen);
+        } else if (armoredRadioButton.isChecked()) {
+            decoder = new ArmoredDecoder(pictureChosen);
+        } else {
+            Utils.buildTextViewPopUp(this, getString(R.string.global_error_occurred), getString(R.string.no_algorithm_selected));
+            return;
+        }
+
         try {
-            String message = (new SteganoDecoder(this.picChosen)).decode();
+            String message = decoder.decode();
             String text = getString(R.string.this_is_the_mess) + message;
             Utils.buildTextViewPopUp(this, getString(R.string.info), text);
         }
@@ -61,6 +82,7 @@ public class DecodeActivity extends AppCompatActivity {
     }
 
     public void showGallery(View view) {
+
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("image/*");
         startActivityForResult(intent, PICK_IMAGE);

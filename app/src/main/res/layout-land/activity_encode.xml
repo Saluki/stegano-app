@@ -66,7 +66,7 @@
                     android:text="@string/lsb_description" />
 
                 <RadioButton
-                    android:id="@+id/ExifRadioButton"
+                    android:id="@+id/ArmoredRadioButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:checked="false"
@@ -94,14 +94,14 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:indeterminate="false"
-                android:progress="75" />
+                android:progress="40" />
 
             <TextView
                 android:id="@+id/algorithmStrengthText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
-                android:text="@string/algorithm_strength_strong"
+                android:text="@string/algorithm_strength_weak"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
             <LinearLayout

@@ -25,7 +25,7 @@ import java.io.IOException;
 
 import ovh.gorillahack.steganoapp.R;
 import ovh.gorillahack.steganoapp.algorithm.EncoderInterface;
-import ovh.gorillahack.steganoapp.algorithm.ExifEncoder;
+import ovh.gorillahack.steganoapp.algorithm.ArmoredEncoder;
 import ovh.gorillahack.steganoapp.algorithm.SteganoEncoder;
 import ovh.gorillahack.steganoapp.exceptions.SteganoEncodeException;
 import ovh.gorillahack.steganoapp.utils.Utils;
@@ -36,15 +36,15 @@ public class EncodeActivity extends AppCompatActivity {
 
     private static final int PICK_IMAGE = 1;
     private static final int TAKE_PICTURE = 2;
-    private static final int LSB_STRENGTH_PROGRESS = 75;
-    private static final int EXIF_STRENGTH_PROGRESS = 25;
+    private static final int LSB_STRENGTH_PROGRESS = 40;
+    private static final int ARMORED_STRENGTH_PROGRESS = 75;
 
     protected EditText messageToEncodeET;
     protected TextView countMessageLabel;
     protected ProgressBar algorithmStrengthBar;
     protected TextView algorithmStrengthText;
     protected RadioButton lsbRadioButton;
-    protected RadioButton exifRadioButton;
+    protected RadioButton armoredRadioButton;
 
     String messageToEncode = "";
     Bitmap pictureChosen;
@@ -65,13 +65,14 @@ public class EncodeActivity extends AppCompatActivity {
         algorithmStrengthBar = (ProgressBar) findViewById(R.id.algorithmStrengthBar);
         algorithmStrengthText = (TextView) findViewById(R.id.algorithmStrengthText);
         lsbRadioButton = (RadioButton) findViewById(R.id.LsbRadioButton);
-        exifRadioButton = (RadioButton) findViewById(R.id.ExifRadioButton);
+        armoredRadioButton = (RadioButton) findViewById(R.id.ArmoredRadioButton);
 
         messageToEncodeET.addTextChangedListener(getInputLengthWatcher());
 
         lsbRadioButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 if (checkBoxSwitch == 1) {
                     easterEgg++;
                     checkBoxSwitch = 0;
@@ -80,19 +81,22 @@ public class EncodeActivity extends AppCompatActivity {
                     if (easterEgg > 3)
                         layout.getBackground().setAlpha(easterEgg * 10); //everytime he switches add alpha to new backround
                 }
+
                 algorithmStrengthBar.setProgress(LSB_STRENGTH_PROGRESS);
-                algorithmStrengthText.setText(getString(R.string.algorithm_strength_strong));
+                algorithmStrengthText.setText(getString(R.string.algorithm_strength_weak));
             }
         });
 
-        exifRadioButton.setOnClickListener(new View.OnClickListener() {
+        armoredRadioButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 if (checkBoxSwitch == 0) {
                     checkBoxSwitch = 1;
                 }
-                algorithmStrengthBar.setProgress(EXIF_STRENGTH_PROGRESS);
-                algorithmStrengthText.setText(getString(R.string.algorithm_strength_weak));
+
+                algorithmStrengthBar.setProgress(ARMORED_STRENGTH_PROGRESS);
+                algorithmStrengthText.setText(getString(R.string.algorithm_strength_strong));
             }
         });
     }
@@ -153,7 +157,7 @@ public class EncodeActivity extends AppCompatActivity {
 
             if (data == null || data.getData() == null) {
                 Utils.buildTextViewPopUp(this, getString(R.string.global_error_occurred), getString(R.string.error));
-                Log.e("ChoosePicActivity", "Data format was null");
+                Log.e("EncodeActivity", "Data format was null");
                 return;
             }
             Uri uri = data.getData();
@@ -161,7 +165,7 @@ public class EncodeActivity extends AppCompatActivity {
                 pictureChosen = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
             } catch (IOException e) {
                 Toast.makeText(getApplicationContext(), R.string.error, Toast.LENGTH_LONG).show();
-                Log.e("ChoosePicActivity", "Could not retrieve media: " + e.getMessage());
+                Log.e("EncodeActivity", "Could not retrieve media: " + e.getMessage());
                 return;
             }
 
@@ -200,33 +204,33 @@ public class EncodeActivity extends AppCompatActivity {
         messageToEncode = messageToEncodeET.getText().toString(); //get message from Edit Text
         EncoderInterface encoder;
 
-        if (lsbRadioButton.getText().length() > 0) {
+        if (lsbRadioButton.isChecked()) {
             encoder = new SteganoEncoder(pictureChosen);
-            Bitmap encodedBitmap = (Bitmap) encoder.encode(messageToEncode);
-
-            String imageName = "STEGANO_" + Utils.getCurrentTimeStamp() + ".png";
-
-            FileOutputStream out = null;
-            File imageFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), imageName);
-            try {
-                out = new FileOutputStream(imageFile);
-                encodedBitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
-            } catch (Exception e) {
-                throw new SteganoEncodeException(e.getMessage());
-            } finally {
-                try {
-                    if (out != null) {
-                        out.close();
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        } else if (exifRadioButton.getText().length() > 0) {
-            //TODO
-            (new ExifEncoder()).encode(messageToEncode);
+        } else if (armoredRadioButton.isChecked()) {
+            encoder = new ArmoredEncoder(pictureChosen);
         } else {
             throw new SteganoEncodeException("No algorithm has been selected");
+        }
+
+        Bitmap encodedBitmap = (Bitmap) encoder.encode(messageToEncode);
+
+        String imageName = "STEGANO_" + Utils.getCurrentTimeStamp() + ".png";
+        FileOutputStream out = null;
+        File imageFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), imageName);
+
+        try {
+            out = new FileOutputStream(imageFile);
+            encodedBitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+        } catch (Exception e) {
+            throw new SteganoEncodeException(e.getMessage());
+        } finally {
+            try {
+                if (out != null) {
+                    out.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

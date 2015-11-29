@@ -64,7 +64,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/exif_description"
-                android:id="@+id/ExifRadioButton"
+                android:id="@+id/ArmoredRadioButton"
                 android:checked="false" />
 
         </RadioGroup>
@@ -87,7 +87,7 @@
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:progress="75"
+            android:progress="40"
             android:indeterminate="false"
             android:id="@+id/algorithmStrengthBar" />
 
@@ -95,7 +95,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="@string/algorithm_strength_strong"
+            android:text="@string/algorithm_strength_weak"
             android:id="@+id/algorithmStrengthText"
             android:layout_gravity="end" />
 

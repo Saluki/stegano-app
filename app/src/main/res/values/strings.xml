@@ -16,7 +16,7 @@
     <string name="write_message">Write a message...</string>
     <string name="algorithm">Algorithm</string>
     <string name="lsb_description">Least Significant Bit</string>
-    <string name="exif_description">EXIF Metadata</string>
+    <string name="exif_description">Armored LSB</string>
     <string name="strength">Strength</string>
     <string name="algorithm_strength_strong">Strong, not easily detected</string>
     <string name="algorithm_strength_weak">Weak, can be quickly detected</string>
@@ -40,5 +40,6 @@
     <string name="no_image_retreived">No image has been received</string>
     <string name="encoding_success_title">Encoding done</string>
     <string name="encoding_success_body">Successfully encoded your message.\nThe picture has been saved in the \"Pictures\" folder on the external storage.</string>
+    <string name="no_algorithm_selected">No algorithm has been selected</string>
 
 </resources>
