@@ -87,9 +87,6 @@ public class DecodeActivity extends AppCompatActivity {
         chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[]{pickIntent});
 
         startActivityForResult(chooserIntent, PICK_IMAGE);
-        //Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        //intent.setType("image/*");
-        //startActivityForResult(intent, PICK_IMAGE);
     }
 
 }
